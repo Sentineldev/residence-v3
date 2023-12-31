@@ -40,7 +40,7 @@ export default function CreateExpenseModal({ onCreatedHandler }: CreateExpenseMo
         const bolivares = form.elements.namedItem("bolivares") as HTMLInputElement;
         const changeRate = form.elements.namedItem("change_rate") as HTMLInputElement;
 
-        const response = await ExpenseAPI.Create({
+        const response = await ExpenseAPI.create({
             Concept: concept.value,
             Type: type.value,
             Date: date.value,

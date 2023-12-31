@@ -1,44 +1,45 @@
-import { Show, createResource, createSignal, onMount } from "solid-js";
-import ExpenseAPI from "../../API/expense.api";
+import { Show, createResource, createSignal } from "solid-js";
 // import { IncomingExpenseDto } from "../../API/dto/expense.dto";
 import ExpensesDisplay from "./expenses-display";
 import CreateExpenseModal from "./modals/create-expense";
 import { IncomingExpenseDto } from "../../API/dto/expense.dto";
 import UpdateExpenseModal from "./modals/update-expense";
+import ExpenseAPI from "../../API/expense.api";
+import DeleteExpenseModal from "./modals/delete-expense";
 
 export default function ExpenseIndex() {
 
-    const [onCreated, setOnCreated] = createSignal<boolean>(false)
-
     const [selectedExpense, setSelectedExpense] = createSignal<IncomingExpenseDto>();
-    const [expenseList] = createResource<IncomingExpenseDto[], boolean>(onCreated, ExpenseAPI.getExpenses)
+    const [expenseList, { refetch, mutate }] = createResource<IncomingExpenseDto[], number>(ExpenseAPI.getExpenses)
 
     function onCreatedHandler() {
-        setOnCreated((previous) => !previous)
+        mutate();
+        refetch();
     }
 
-    function onSelectExpenseHandler(expense: IncomingExpenseDto | undefined) {
+    function onSelectExpenseHandler(expense: IncomingExpenseDto | undefined, action: 'DELETE' | 'UPDATE' | 'NONE') {
         setSelectedExpense(expense);
-        if (expense) OpenModalHandler();
+        if (expense) 
+            action === 'UPDATE' ? 
+                OpenModalHandler('update-expense-modal') : 
+                OpenModalHandler('delete-expense-modal');
     }   
 
-    function OpenModalHandler() {
+    function OpenModalHandler(modalId: string) {
 
-        const dialog = document.getElementById('update-expense-modal') as HTMLDialogElement
+        const dialog = document.getElementById(modalId) as HTMLDialogElement
         if (dialog) {
             dialog.showModal();
         }
     }
 
-    onMount(() => {
-        setOnCreated((previous) => !previous)
-    })
     return (
         <div class="p-12">
             <header class="font-bold text-4xl text-center py-6">Detalle de Gastos</header>
             <div>
                 <CreateExpenseModal onCreatedHandler={onCreatedHandler}/>
                 { selectedExpense() && <UpdateExpenseModal selectExpense={onSelectExpenseHandler} onCreatedHandler={onCreatedHandler} expense={selectedExpense()!} />  }
+                { selectedExpense() && <DeleteExpenseModal selectExpense={onSelectExpenseHandler} onCreatedHandler={onCreatedHandler} expense={selectedExpense()!} />  }
             </div>
             <Show when={expenseList()} fallback={<p> loading...</p>} >
                 <div>

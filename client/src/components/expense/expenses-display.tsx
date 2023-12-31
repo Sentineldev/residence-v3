@@ -4,7 +4,7 @@ import ExpenseDisplay from "./expense-display";
 
 export type ExpensesDisplayProps = {
     expenses: IncomingExpenseDto[];
-    selectExpense: (expense: IncomingExpenseDto | undefined) => void;
+    selectExpense: (expense: IncomingExpenseDto | undefined, action: 'DELETE' | 'UPDATE' | 'NONE') => void;
 }
 export default function ExpensesDisplay({ expenses, selectExpense }: ExpensesDisplayProps) {
 
