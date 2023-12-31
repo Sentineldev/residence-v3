@@ -29,5 +29,5 @@ func main() {
 	router.POST("/expenses", ExpenseController.Create)
 	router.PUT("/expenses/:id", ExpenseController.Update)
 	router.DELETE("/expenses/:id", ExpenseController.Delete)
-	router.Run("localhost:8080")
+	router.Run("localhost:8001")
 }

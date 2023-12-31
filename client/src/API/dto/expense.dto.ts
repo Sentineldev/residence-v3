@@ -7,3 +7,12 @@ export type IncomingExpenseDto = {
     Bolivares: Number;
     ChangeRate: number;
 }
+
+export type CreateConceptoDto = {
+    Concept: String;
+    Type: String;
+    Date: String;
+    Dollars: Number;
+    Bolivares: Number;
+    ChangeRate: Number;
+}

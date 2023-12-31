@@ -20,8 +20,8 @@ const (
 	host     = "localhost"
 	port     = 5432
 	user     = "postgres"
-	password = "sistema.2912"
-	dbname   = "residence"
+	password = "70242526e"
+	dbname   = "residencia"
 )
 
 func Connection() (*sql.DB, error) {
@@ -30,7 +30,7 @@ func Connection() (*sql.DB, error) {
 		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		return &sql.DB{}, errors.New("Database connection failed")
+		return &sql.DB{}, errors.New("database connection failed")
 	}
 	return db, nil
 }
