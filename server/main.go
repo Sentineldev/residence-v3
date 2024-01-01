@@ -2,6 +2,7 @@ package main
 
 import (
 	ExpenseController "server/expense/controller"
+	PropertyController "server/property/controller"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -29,5 +30,11 @@ func main() {
 	router.POST("/expenses", ExpenseController.Create)
 	router.PUT("/expenses/:id", ExpenseController.Update)
 	router.DELETE("/expenses/:id", ExpenseController.Delete)
+
+	//Router para las propiedades
+	router.GET("/properties", PropertyController.Properties)
+	router.GET("/properties/:symbol", PropertyController.BySymbol)
+	router.GET("/properties/transaction/:propertyId/:type", PropertyController.Transactions)
+	router.POST("/properties/transaction/:type", PropertyController.Transaction)
 	router.Run("localhost:8001")
 }

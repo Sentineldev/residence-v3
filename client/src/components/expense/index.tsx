@@ -6,6 +6,7 @@ import { IncomingExpenseDto } from "../../API/dto/expense.dto";
 import UpdateExpenseModal from "./modals/update-expense";
 import ExpenseAPI from "../../API/expense.api";
 import DeleteExpenseModal from "./modals/delete-expense";
+import SideBar from "../sidebar/sidebar";
 
 export default function ExpenseIndex() {
 
@@ -34,18 +35,20 @@ export default function ExpenseIndex() {
     }
 
     return (
-        <div class="p-12">
-            <header class="font-bold text-4xl text-center py-6">Detalle de Gastos</header>
-            <div>
-                <CreateExpenseModal onCreatedHandler={onCreatedHandler}/>
-                { selectedExpense() && <UpdateExpenseModal selectExpense={onSelectExpenseHandler} onCreatedHandler={onCreatedHandler} expense={selectedExpense()!} />  }
-                { selectedExpense() && <DeleteExpenseModal selectExpense={onSelectExpenseHandler} onCreatedHandler={onCreatedHandler} expense={selectedExpense()!} />  }
-            </div>
-            <Show when={expenseList()} fallback={<p> loading...</p>} >
+        <SideBar>
+            <div class="p-12">
+                <header class="font-bold text-4xl text-center py-6">Detalle de Gastos</header>
                 <div>
-                    <ExpensesDisplay selectExpense={onSelectExpenseHandler} expenses={expenseList()!} />
+                    <CreateExpenseModal onCreatedHandler={onCreatedHandler}/>
+                    { selectedExpense() && <UpdateExpenseModal selectExpense={onSelectExpenseHandler} onCreatedHandler={onCreatedHandler} expense={selectedExpense()!} />  }
+                    { selectedExpense() && <DeleteExpenseModal selectExpense={onSelectExpenseHandler} onCreatedHandler={onCreatedHandler} expense={selectedExpense()!} />  }
                 </div>
-            </Show>
-        </div>
+                <Show when={expenseList()} fallback={<p> loading...</p>} >
+                    <div>
+                        <ExpensesDisplay selectExpense={onSelectExpenseHandler} expenses={expenseList()!} />
+                    </div>
+                </Show>
+            </div>
+        </SideBar>
     );
 }

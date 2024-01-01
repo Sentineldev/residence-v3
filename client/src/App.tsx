@@ -1,8 +1,12 @@
-import ExpenseIndex from './components/expense'
+// import ExpenseIndex from './components/expense'
+import Home from './components/home'
+import SideBar from './components/sidebar/sidebar'
 
 function App() {
   return (
-    <ExpenseIndex/>
+    <SideBar>
+      <Home/>
+    </SideBar>
   )
 }
 
