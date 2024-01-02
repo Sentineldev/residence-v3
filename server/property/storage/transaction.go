@@ -6,7 +6,7 @@ import (
 	"server/property"
 )
 
-func Transactions(symbol string, transactionType string) ([]property.Transaction, error) {
+func Transactions(id string, transactionType string) ([]property.Transaction, error) {
 
 	connection, err := database.Connection()
 
@@ -14,9 +14,9 @@ func Transactions(symbol string, transactionType string) ([]property.Transaction
 		return nil, err
 	}
 
-	query := "SELECT id, concept, type, date,  dollars, bolivares, change_rate FROM property_transaction WHERE symbol = $1 AND type = $2"
+	query := "SELECT id, concept, type, date,  dollars, bolivares, change_rate FROM property_transaction WHERE property_id = $1 AND type = $2"
 
-	rows, err := connection.Query(query, symbol, transactionType)
+	rows, err := connection.Query(query, id, transactionType)
 
 	if err != nil {
 		return nil, err

@@ -1,18 +1,55 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
+	"net/url"
 	"server/expense"
 	"server/expense/storage"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
+func Stats(context *gin.Context) {
+	month, err := strconv.Atoi(context.Param("month"))
+
+	if err != nil {
+		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	year, err := strconv.Atoi(context.Param("year"))
+	if err != nil {
+		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	stats, err := storage.Stats(month, year)
+
+	context.IndentedJSON(http.StatusOK, stats)
+	return
+
+}
+
 func Expenses(context *gin.Context) {
-	fmt.Println("Buscar todos los gastos")
-	expenses, err := storage.GetExpenses()
+	var typeFilter string
+	var dateFilter string
+	typeQuery := context.Query("type")
+	dateQuery := context.Query("date")
+	searchQuery, err := url.QueryUnescape(context.Query("search"))
+	typeFilter = typeQuery
+
+	if typeQuery != "ESTIMATED" && typeQuery != "REAL" {
+		typeFilter = "REAL"
+	}
+	if err != nil {
+		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	dateFilter = dateQuery
+	expenses, err := storage.GetExpenses(typeFilter, dateFilter, searchQuery)
 
 	if err != nil {
 		context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})

@@ -86,5 +86,5 @@ func Transaction(context *gin.Context) {
 		return
 	}
 
-	context.IndentedJSON(http.StatusOK, transactions)
+	context.IndentedJSON(http.StatusCreated, transactions)
 }

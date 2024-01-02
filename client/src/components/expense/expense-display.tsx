@@ -30,7 +30,7 @@ export default function ExpenseDisplay({ expense,  selectExpense}: ExpenseDispla
             <div>
                 <header>
                     <span class="lg:hidden"><strong>Tipo</strong>: </span>
-                    <span>{Type}</span>
+                    <span>{Type === 'REAL' ? 'Real' : 'Estimado'}</span>
                 </header>
             </div>
             <div>

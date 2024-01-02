@@ -5,7 +5,7 @@ export type SideBarProps = {
 }
 export default function SideBar({ children }: SideBarProps) {
     return(
-        <div class="grid grid-cols-1 lg:grid-cols-5 h-screen">
+        <aside class="grid grid-cols-1 lg:grid-cols-5 h-screen overflow-y-auto">
             <div class="flex lg:hidden  items-center p-2 px-3">
                 <button class="bg-neutral-300 p-3 rounded shadow shadowl-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50">
@@ -35,9 +35,9 @@ export default function SideBar({ children }: SideBarProps) {
                     </li>
                 </ul>
             </nav>
-            <div class="col-span-4">
+            <div class="col-span-4 h-full  overflow-y-auto">
                 {children}
             </div>
-        </div>
+        </aside>
     );
 }

@@ -1,3 +1,5 @@
+import { RegisterTransactionDto } from "./dto/property.dto"
+
 export default class PropertyAPI {
 
 
@@ -21,6 +23,14 @@ export default class PropertyAPI {
         const response = await fetch(`http://localhost:8001/properties/transaction/${encodeURIComponent(id)}/${encodeURIComponent(type)}`)
         const data = await response.json()
         return data
+    }
+
+    public static async RegisterTransaction(type: string, body: RegisterTransactionDto) {
+        const response = await fetch(`http://localhost:8001/properties/transaction/${encodeURIComponent(type)}`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+        return response;
     }
 
 

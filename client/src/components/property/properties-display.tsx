@@ -7,10 +7,9 @@ export type PropertiesDisplayProps = {
 }
 export default function PropertiesDisplay({ properties }: PropertiesDisplayProps) {
 
-
     return (
         <div class="flex flex-col gap-4 py-8">
-            <div class="hidden lg:grid lg:grid-cols-4 gap-2">
+            <div class="hidden lg:grid lg:grid-cols-4 gap-2 items-center">
                 <div>
                     <header class="font-bold text-xl">Inmueble</header>
                 </div>

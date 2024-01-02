@@ -7,7 +7,7 @@ export default function PropertyDisplay({ property }: PropertyDisplayProps) {
 
     const { Balance, Floor, Symbol } = property;
     return (
-        <div class="grid grid-cols-1 lg:grid-cols-4 border-b py-2 gap-2">
+        <div class="grid grid-cols-1 lg:grid-cols-4 border-b py-4 gap-2 items-center">
             <div>
                 <a target="_blank" class="text-blue-600 underline" href={`/properties/${Symbol}`}>
                     <span class="lg:hidden"><strong>Inmueble</strong>: </span>
@@ -23,7 +23,7 @@ export default function PropertyDisplay({ property }: PropertyDisplayProps) {
             <div>
                 <header>
                     <span class="lg:hidden"><strong>Balance</strong>: </span>
-                    <span>{Balance.toLocaleString()}</span>
+                    <span class={`${Balance  >= 0 ? `bg-green-400` : `bg-red-400`} px-4 py-2 rounded-lg`}>{Balance.toLocaleString()} $</span>
                 </header>
             </div>
             <div class="flex gap-4">

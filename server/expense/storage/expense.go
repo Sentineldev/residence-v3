@@ -3,11 +3,41 @@ package storage
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"server/database"
 	"server/expense"
+	"strings"
 )
 
-func GetExpenses() ([]expense.Expense, error) {
+func Stats(month int, year int) (expense.Stats, error) {
+
+	connection, err := database.Connection()
+
+	if err != nil {
+		return expense.Stats{}, err
+	}
+
+	var stats expense.Stats
+	row := connection.QueryRow(`
+	select 
+	coalesce(sum(case when e."type" = 'REAL' then  e.dollars  end),0) as REAL,
+	coalesce(sum(case when e."type" = 'ESTIMATED' then  e.dollars  end  ),0) as ESTIMATED
+	from expense e where extract(year from e."date") = $1 and extract(month from e."date") = $2
+	`, year, month).Scan(&stats.Real, &stats.Estimated)
+
+	if row != nil {
+		if row == sql.ErrNoRows {
+			return expense.Stats{}, row
+		}
+		return expense.Stats{}, row
+	}
+
+	defer connection.Close()
+
+	return stats, nil
+}
+
+func GetExpenses(expenseType string, date string, search string) ([]expense.Expense, error) {
 
 	connection, err := database.Connection()
 
@@ -15,11 +45,19 @@ func GetExpenses() ([]expense.Expense, error) {
 		return nil, errors.New(err.Error())
 	}
 
-	rows, err := connection.Query("SELECT * FROM expense")
+	words := strings.Fields(search)
+	var query string
+	for _, element := range words {
+		query += "%%" + element + "%%"
+	}
+
+	rows, err := connection.Query("SELECT * FROM expense where type = $1 and date >= $2 and LOWER(concept) like $3",
+		expenseType,
+		date,
+		fmt.Sprintf("%%"+strings.ToLower(query)+"%%"))
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 	var expenses []expense.Expense
 

@@ -12,6 +12,10 @@ export default function PropertyIndex() {
         <SideBar>
             <div class="p-12">
                 <header class="font-bold text-4xl text-center py-6">Detalle de Inmuebles</header>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                    <a href="/properties/transaction/CHARGE" class="bg-blue-400 text-white p-3 px-4 rounded-lg shadow-lg">Registrar Cargo</a>
+                    <a href="/properties/transaction/PAYMENT" class="bg-green-400 text-white p-3 px-4 rounded-lg shadow-lg">Registrar Pago</a>
+                </div>
                 <Show when={propertyList()} fallback={<p> loading...</p>} >
                     <div>
                         <PropertiesDisplay properties={propertyList()!} />

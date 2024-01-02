@@ -25,6 +25,7 @@ func main() {
 		MaxAge: 12 * time.Hour,
 	}))
 
+	router.GET("/expenses/stats/:year/:month", ExpenseController.Stats)
 	router.GET("/expenses", ExpenseController.Expenses)
 	router.GET("/expenses/:id", ExpenseController.ById)
 	router.POST("/expenses", ExpenseController.Create)

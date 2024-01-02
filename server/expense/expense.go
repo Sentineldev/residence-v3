@@ -16,3 +16,8 @@ type Expense struct {
 	Bolivares  float64
 	ChangeRate float64
 }
+
+type Stats struct {
+	Estimated float64
+	Real      float64
+}

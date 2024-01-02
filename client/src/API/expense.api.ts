@@ -7,8 +7,25 @@ export default class ExpenseAPI {
 
 
 
-    public static async getExpenses() {
-        const response = await fetch('http://localhost:8001/expenses')
+    public static async getStats(year: number, month: number) {
+
+
+        const url = new URL(`http://localhost:8001/expenses/stats/${year}/${month}`)
+
+        const response = await fetch(url);
+
+        const data = await response.json()
+
+        return data
+    }
+
+    public static async getExpenses(search: string, date: string, type: string) {
+
+        const url = new URL(`http://localhost:8001/expenses`);
+        url.searchParams.append('search', encodeURIComponent(search));
+        url.searchParams.append('date', date);
+        url.searchParams.append('type', type);
+        const response = await fetch(url)
         const data = await response.json()
         return data
     }

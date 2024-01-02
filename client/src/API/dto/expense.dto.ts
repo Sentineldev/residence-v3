@@ -16,3 +16,8 @@ export type CreateConceptoDto = {
     Bolivares: Number;
     ChangeRate: Number;
 }
+
+export type IncomingExpenseStatsDto = {
+    Real: number;
+    Estimated: number;
+}

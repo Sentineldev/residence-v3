@@ -9,6 +9,7 @@ import { Router, Route } from "@solidjs/router";
 import ExpenseIndex from './components/expense';
 import PropertyIndex from './components/property';
 import DetailPropertyIndex from './components/property/detail/detail-index';
+import RegisterCharge from './components/property/transaction/register';
 
 const root = document.getElementById('root')
 
@@ -19,6 +20,7 @@ render(() => (
         <Route path={`/properties`}>
             <Route path='' component={PropertyIndex}/>
             <Route path='/:symbol' component={DetailPropertyIndex}/>
+            <Route path='transaction/:type' component={RegisterCharge}/>
         </Route>
     </Router>
 ), root!)

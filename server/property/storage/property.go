@@ -15,7 +15,14 @@ func GetProperties() ([]property.Property, error) {
 		return nil, errors.New(err.Error())
 	}
 
-	rows, err := connection.Query("SELECT * FROM property")
+	rows, err := connection.Query(`
+	SELECT id, symbol, floor,
+	(
+	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
+	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
+	)balance FROM property p
+	`)
+	// rows, err := connection.Query("SELECT * FROM property")
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +51,16 @@ func GetBySymbol(symbol string) (property.Property, error) {
 		return property.Property{}, err
 	}
 	var findProperty property.Property
-	row := connection.QueryRow("SELECT * FROM property where symbol = $1", symbol).
+
+	// query := "SELECT * FROM property where symbol = $1"
+	query := `
+	SELECT id, symbol, floor,
+	(
+	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
+	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
+	)balance FROM property p WHERE p.symbol = $1
+	`
+	row := connection.QueryRow(query, symbol).
 		Scan(&findProperty.Id,
 			&findProperty.Symbol,
 			&findProperty.Floor,
