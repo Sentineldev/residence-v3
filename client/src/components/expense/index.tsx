@@ -11,7 +11,7 @@ import SideBar from "../sidebar/sidebar";
 export default function ExpenseIndex() {
 
     const [selectedExpense, setSelectedExpense] = createSignal<IncomingExpenseDto>();
-    const [expenseList, { refetch, mutate }] = createResource<IncomingExpenseDto[], number>(ExpenseAPI.getExpenses)
+    const [expenseList, { refetch, mutate }] = createResource<IncomingExpenseDto[]>(ExpenseAPI.getExpenses)
 
     function onCreatedHandler() {
         mutate();

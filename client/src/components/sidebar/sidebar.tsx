@@ -30,7 +30,7 @@ export default function SideBar({ children }: SideBarProps) {
                     <li>
                         <a 
                         class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
-                        href="/">Inmuebles
+                        href="/properties">Inmuebles
                         </a>
                     </li>
                 </ul>

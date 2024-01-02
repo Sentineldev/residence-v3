@@ -10,7 +10,7 @@ export default function ExpensesDisplay({ expenses, selectExpense }: ExpensesDis
 
     return (
         <div class="flex flex-col gap-4 py-8">
-            <div class="hidden lg:grid lg:grid-cols-5 ">
+            <div class="hidden lg:grid lg:grid-cols-5 gap-2 ">
                 <div>
                     <header class="font-bold text-xl">Concepto</header>
                 </div>

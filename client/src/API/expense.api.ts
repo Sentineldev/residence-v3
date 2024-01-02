@@ -8,7 +8,6 @@ export default class ExpenseAPI {
 
 
     public static async getExpenses() {
-        console.log('USing this function...');
         const response = await fetch('http://localhost:8001/expenses')
         const data = await response.json()
         return data
