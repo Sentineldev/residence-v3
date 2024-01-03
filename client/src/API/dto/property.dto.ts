@@ -1,8 +1,15 @@
+
+export type IncomingResidentDto = {
+    Id: string;
+    Identification: string;
+    Name: string;
+}
 export type IncomingPropertyDto = {
     Id: string;
     Symbol: string;
     Floor: number;
     Balance: number;
+    Owner: IncomingResidentDto;
 }
 
 export type IncomingTransactionDto = {

@@ -3,6 +3,7 @@ package storage
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"server/database"
 	"server/property"
 )
@@ -16,13 +17,19 @@ func GetProperties() ([]property.Property, error) {
 	}
 
 	rows, err := connection.Query(`
-	SELECT id, symbol, floor,
+	SELECT p.id, p.symbol, p.floor,
 	(
 	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
 	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
-	)balance FROM property p
+	) balance ,
+	r.id as owner_id,
+	r.identification,
+	r.name
+	FROM property p join resident r on r.id = p.owner_id	
 	`)
 	// rows, err := connection.Query("SELECT * FROM property")
+
+	fmt.Printf("Rows: %+v: ", rows)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +39,7 @@ func GetProperties() ([]property.Property, error) {
 
 	for rows.Next() {
 		var property property.Property
-		if err := rows.Scan(&property.Id, &property.Symbol, &property.Floor, &property.Balance); err != nil {
+		if err := rows.Scan(&property.Id, &property.Symbol, &property.Floor, &property.Balance, &property.Owner.Id, &property.Owner.Identification, &property.Owner.Name); err != nil {
 			return properties, err
 		}
 		properties = append(properties, property)
@@ -54,17 +61,24 @@ func GetBySymbol(symbol string) (property.Property, error) {
 
 	// query := "SELECT * FROM property where symbol = $1"
 	query := `
-	SELECT id, symbol, floor,
+	SELECT p.id, p.symbol, p.floor,
 	(
 	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
 	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
-	)balance FROM property p WHERE p.symbol = $1
+	)balance ,
+	r.id as owner_id,
+	r.identification,
+	r.name
+	FROM property p join resident r on r.id = p.owner_id WHERE p.symbol = $1
 	`
 	row := connection.QueryRow(query, symbol).
 		Scan(&findProperty.Id,
 			&findProperty.Symbol,
 			&findProperty.Floor,
-			&findProperty.Balance)
+			&findProperty.Balance,
+			&findProperty.Owner.Id,
+			&findProperty.Owner.Identification,
+			&findProperty.Owner.Name)
 	if row != nil {
 		if row == sql.ErrNoRows {
 			return property.Property{}, row

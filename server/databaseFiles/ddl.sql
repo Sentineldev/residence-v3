@@ -8,11 +8,19 @@ CREATE TABLE expense(
     change_rate float
 );
 
+
+create table resident(
+    id TEXT PRIMARY KEY,
+    identification varchar(128) UNIQUE NOT NULL,
+    name varchar(128) NOT NULL
+);
 CREATE TABLE property(
     id TEXT PRIMARY KEY,
+    owner_id varchar(128),
     symbol varchar(32) UNIQUE NOT NULL,
     floor int not null,
-    balance float not null
+    balance float not null,
+    FOREIGN KEY(owner_id) references "resident"(id)
 );
 
 CREATE TABLE property_transaction(

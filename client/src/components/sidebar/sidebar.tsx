@@ -5,7 +5,7 @@ export type SideBarProps = {
 }
 export default function SideBar({ children }: SideBarProps) {
     return(
-        <aside class="grid grid-cols-1 lg:grid-cols-5 h-screen overflow-y-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-5 h-screen overflow-y-auto">
             <div class="flex lg:hidden  items-center p-2 px-3">
                 <button class="bg-neutral-300 p-3 rounded shadow shadowl-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50">
@@ -13,31 +13,33 @@ export default function SideBar({ children }: SideBarProps) {
                     </svg>
                 </button>
             </div>
-            <nav class="col-span-1 bg-neutral-300 hidden lg:block">
-                <ul class="flex flex-col gap-4 p-6">
-                    <li>
-                        <a 
-                        class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
-                        href="/">Resumen
-                        </a>
-                    </li>
-                    <li>
-                        <a 
-                        class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
-                        href="/expenses">Gastos
-                        </a>
-                    </li>
-                    <li>
-                        <a 
-                        class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
-                        href="/properties">Inmuebles
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <aside>
+                <nav class="col-span-1 h-full bg-neutral-400 hidden lg:block">
+                    <ul class="flex flex-col gap-4 p-6">
+                        <li>
+                            <a 
+                            class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
+                            href="/">Resumen
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                            class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
+                            href="/expenses">Gastos
+                            </a>
+                        </li>
+                        <li>
+                            <a 
+                            class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
+                            href="/properties">Inmuebles
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
             <div class="col-span-4 h-full  overflow-y-auto">
                 {children}
             </div>
-        </aside>
+        </div>
     );
 }

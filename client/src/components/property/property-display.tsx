@@ -5,9 +5,15 @@ export type PropertyDisplayProps = {
 }
 export default function PropertyDisplay({ property }: PropertyDisplayProps) {
 
-    const { Balance, Floor, Symbol } = property;
+    const { Balance, Floor, Symbol, Owner: { Name } } = property;
     return (
-        <div class="grid grid-cols-1 lg:grid-cols-4 border-b py-4 gap-2 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-5 border-b py-4 gap-2 items-center">
+            <div>
+                <p>
+                    <span class="lg:hidden"><strong>Propietario</strong>: </span>
+                    <span>{Name}</span>
+                </p>
+            </div>
             <div>
                 <a target="_blank" class="text-blue-600 underline" href={`/properties/${Symbol}`}>
                     <span class="lg:hidden"><strong>Inmueble</strong>: </span>

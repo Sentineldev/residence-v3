@@ -47,7 +47,7 @@ export default function TransactionPropertyDisplay(props: TransactionPropertyDis
                             {
                                 props.type === "ADD" ?
                                 <button onclick={() => props.onSelect(property)} class="bg-blue-400 p-1 rounded text-sm text-white shado-lg">
-                                    Agregar
+                                    Seleccionar
                                 </button>
                                 :
                                 <button onclick={() => props.onSelect(property)} class="bg-red-400 p-1 rounded text-sm text-white shado-lg">
