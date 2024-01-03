@@ -18,8 +18,8 @@ func GetProperties() ([]property.Property, error) {
 	rows, err := connection.Query(`
 	SELECT id, symbol, floor,
 	(
-	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
-	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
+	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
+	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
 	)balance FROM property p
 	`)
 	// rows, err := connection.Query("SELECT * FROM property")
@@ -56,8 +56,8 @@ func GetBySymbol(symbol string) (property.Property, error) {
 	query := `
 	SELECT id, symbol, floor,
 	(
-	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
-	(SELECT SUM(dollars)from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
+	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
+	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
 	)balance FROM property p WHERE p.symbol = $1
 	`
 	row := connection.QueryRow(query, symbol).

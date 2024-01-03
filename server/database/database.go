@@ -20,8 +20,8 @@ const (
 	host     = "localhost"
 	port     = 5432
 	user     = "postgres"
-	password = "sistema.2912"
-	dbname   = "residence"
+	password = "70242526e"
+	dbname   = "residencia"
 )
 
 func Connection() (*sql.DB, error) {
