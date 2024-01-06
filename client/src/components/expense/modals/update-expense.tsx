@@ -65,35 +65,35 @@ export default function UpdateExpenseModal({ onCreatedHandler, expense, selectEx
             <form onsubmit={onSubmitHandler} class="p-6 w-[200px] lg:w-[480px] flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Concepto</label>
-                    <input value={expense.Concept} class="border-b outline-none py-1" type="text" name="concept" id="concept" placeholder="Concepto de gasto" />
+                    <input value={expense.Concept} class="border-b border-neutral-400 outline-none py-1" type="text" name="concept" id="concept" placeholder="Concepto de gasto" />
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Tipo de Gasto</label>
                     {/* <input class="border-b outline-none" type="text" name="concept" id="concept" placeholder="Concepto de gasto..." /> */}
-                    <select class="border-b outline-none bg-transparent py-2" name="type" id="type">
+                    <select class="border-b border-neutral-400 outline-none bg-transparent py-2" name="type" id="type">
                         <option value="ESTIMATED">Estimado</option>
                         <option value="REAL">Real</option>
                     </select>
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Fecha</label>
-                    <input value={expense.Date.split('T')[0]} class="border-b outline-none py-1" type="date" name="date" id="date" placeholder="Fecha..." />
+                    <input value={expense.Date.split('T')[0]} class="border-b border-neutral-400 outline-none py-1" type="date" name="date" id="date" placeholder="Fecha..." />
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col gap-1">
                         <label for="concept" class="font-semibold">Dolares</label>
-                        <input value={expense.Dollars as number} step={'0.002'} class="border-b outline-none py-1" type="number" name="dollars" id="dollars" placeholder="Cantidad de Dolares" />
+                        <input value={expense.Dollars as number} step={'0.002'} class="border-b border-neutral-400 outline-none py-1" type="number" name="dollars" id="dollars" placeholder="Cantidad de Dolares" />
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="concept" class="font-semibold">Bolivares</label>
-                        <input value={expense.Bolivares as number} step={'0.002'} class="border-b outline-none py-1" type="number" name="bolivares" id="bolivares" placeholder="Cantidad de Bolivares" />
+                        <input value={expense.Bolivares as number} step={'0.002'} class="border-b border-neutral-400 outline-none py-1" type="number" name="bolivares" id="bolivares" placeholder="Cantidad de Bolivares" />
                     </div>
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Tasa de Cambio</label>
-                    <input value={expense.ChangeRate as number} step={'0.002'} class="border-b outline-none py-1" type="number" name="change_rate" id="change_rate" placeholder="Tasa de Cambio" />
+                    <input value={expense.ChangeRate as number} step={'0.002'} class="border-b border-neutral-400 outline-none py-1" type="number" name="change_rate" id="change_rate" placeholder="Tasa de Cambio" />
                 </div>
-                <button class="bg-blue-400 p-2 px-4 text-white rounded-xl text-center">Actualizar</button>
+                <button class="p-2 px-4 bg-primary  text-secondary hover:bg-secondary hover:text-primary font-semibold rounded-lg">Actualizar</button>
             </form>
             
         </dialog>

@@ -3,5 +3,5 @@
 @tailwind components;
 @tailwind utilities;
 html {
-    font-family: sans-serif monospace
+    font-family: 'Roboto', sans-serif;
 }

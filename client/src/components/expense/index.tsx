@@ -70,7 +70,6 @@ export default function ExpenseIndex() {
     return (
         <SideBar>
             <div class="p-12 flex flex-col h-full overflow-y-auto">
-                <header class="font-bold text-4xl text-center pb-12">Detalle de Gastos</header>
                 <Show when={stats()} fallback={<p>Loading stats...</p>}>
                     <div class="pb-12">
                         <ExpenseStats stats={stats()}/>

@@ -1,4 +1,5 @@
 import { RegisterTransactionDto } from "./dto/property.dto"
+import { API_URL } from "./url"
 
 export default class PropertyAPI {
 
@@ -8,25 +9,25 @@ export default class PropertyAPI {
 
 
     public static async getProperties() {
-        const response = await fetch('http://localhost:8001/properties')
+        const response = await fetch(`${API_URL}/properties`)
         const data = await response.json()
         return data
     }
 
     public static async getProperty(symbol: string) {
-        const response = await fetch(`http://localhost:8001/properties/${encodeURIComponent(symbol)}`)
+        const response = await fetch(`${API_URL}/properties/${encodeURIComponent(symbol)}`)
         const data = await response.json()
         return data
     }
 
     public static async getTransactions(id: string, type: 'PAYMENT' | 'CHARGE' ) {
-        const response = await fetch(`http://localhost:8001/properties/transaction/${encodeURIComponent(id)}/${encodeURIComponent(type)}`)
+        const response = await fetch(`${API_URL}/properties/transaction/${encodeURIComponent(id)}/${encodeURIComponent(type)}`)
         const data = await response.json()
         return data
     }
 
     public static async RegisterTransaction(type: string, body: RegisterTransactionDto) {
-        const response = await fetch(`http://localhost:8001/properties/transaction/${encodeURIComponent(type)}`, {
+        const response = await fetch(`${API_URL}/properties/transaction/${encodeURIComponent(type)}`, {
             method: 'POST',
             body: JSON.stringify(body)
         })

@@ -24,7 +24,7 @@ export default function TransactionPropertyDisplay(props: TransactionPropertyDis
             </div>
             <For each={props.properties}>
                 {(property) => (
-                    <div class="grid grid-cols-1  lg:grid-cols-4 gap-3 border-b py-2 items-center">
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-3 border-b border-b-neutral-400 py-2 items-center">
                         <div>
                             <header>
                                 <span class="lg:hidden"><strong>Inmueble</strong>: </span>
@@ -46,11 +46,11 @@ export default function TransactionPropertyDisplay(props: TransactionPropertyDis
                         <div>
                             {
                                 props.type === "ADD" ?
-                                <button onclick={() => props.onSelect(property)} class="bg-blue-400 p-1 rounded text-sm text-white shado-lg">
+                                <button onclick={() => props.onSelect(property)} class="bg-primary text-secondary p-1 rounded text-sm  shado-lg">
                                     Seleccionar
                                 </button>
                                 :
-                                <button onclick={() => props.onSelect(property)} class="bg-red-400 p-1 rounded text-sm text-white shado-lg">
+                                <button onclick={() => props.onSelect(property)} class="bg-red-500 p-1 rounded text-sm text-white shado-lg">
                                     Remover
                                 </button>
                             }

@@ -37,5 +37,5 @@ func main() {
 	router.GET("/properties/:symbol", PropertyController.BySymbol)
 	router.GET("/properties/transaction/:propertyId/:type", PropertyController.Transactions)
 	router.POST("/properties/transaction/:type", PropertyController.Transaction)
-	router.Run("localhost:8001")
+	router.Run("0.0.0.0:8001")
 }

@@ -30,23 +30,23 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
     return (
 
         <div class="py-6">
-            <header class="font-bold text-2xl">Transacciones</header>
-            <select onchange={onSelectHandler} class="outline-none p-2 px-4 bg-transparent border-blue-400 border  rounded-lg my-4" name="type" id="type">
+            <header class="font-semibold text-2xl text-secondary">Transacciones</header>
+            <select onchange={onSelectHandler} class="outline-none p-2 px-4 bg-transparent border-primary border  rounded-lg my-4" name="type" id="type">
                 <option value="CHARGE">Cargos</option>
                 <option value="PAYMENT">Pagos</option>
             </select>
             <div class="hidden lg:grid grid-cols-4 gap-2 py-4 items-center">
                 <div>
-                    <header class="font-bold">Concepto</header>
+                    <header class="font-semibold text-secondary">Concepto</header>
                 </div>
                 <div>
-                    <header class="font-bold">Fecha</header>
+                    <header class="font-semibold text-secondary">Fecha</header>
                 </div>
                 <div>
-                    <header class="font-bold">Dolares</header>
+                    <header class="font-semibold text-secondary">Dolares</header>
                 </div>
                 <div>
-                    <header class="font-bold">Tipo</header>
+                    <header class="font-semibold text-secondary">Tipo</header>
                 </div>
             </div>
             <For each={transactions()}>

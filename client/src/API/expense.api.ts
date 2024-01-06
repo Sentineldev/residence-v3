@@ -1,4 +1,5 @@
 import { CreateConceptoDto } from "./dto/expense.dto"
+import { API_URL } from "./url";
 
 export default class ExpenseAPI {
 
@@ -10,7 +11,7 @@ export default class ExpenseAPI {
     public static async getStats(year: number, month: number) {
 
 
-        const url = new URL(`http://localhost:8001/expenses/stats/${year}/${month}`)
+        const url = new URL(`${API_URL}/expenses/stats/${year}/${month}`)
 
         const response = await fetch(url);
 
@@ -21,7 +22,7 @@ export default class ExpenseAPI {
 
     public static async getExpenses(search: string, date: string, type: string) {
 
-        const url = new URL(`http://localhost:8001/expenses`);
+        const url = new URL(`${API_URL}/expenses`);
         url.searchParams.append('search', encodeURIComponent(search));
         url.searchParams.append('date', date);
         url.searchParams.append('type', type);
@@ -31,7 +32,7 @@ export default class ExpenseAPI {
     }
 
     public static async create(body: CreateConceptoDto) {
-        const response = await fetch('http://localhost:8001/expenses', {
+        const response = await fetch(`${API_URL}/expenses`, {
             method: "POST",
             body: JSON.stringify(body)
         })
@@ -39,7 +40,7 @@ export default class ExpenseAPI {
     }
 
     public static async update(id: string, body: CreateConceptoDto) {
-        const response = await fetch(`http://localhost:8001/expenses/${encodeURIComponent(id)}`, {
+        const response = await fetch(`${API_URL}/expenses/${encodeURIComponent(id)}`, {
             method: "PUT",
             body: JSON.stringify(body)
         })
@@ -47,7 +48,7 @@ export default class ExpenseAPI {
     }
 
     public static async delete(id: string) {
-        const response = await fetch(`http://localhost:8001/expenses/${encodeURIComponent(id)}`, {
+        const response = await fetch(`${API_URL}/expenses/${encodeURIComponent(id)}`, {
             method: "DELETE",
         })
         return response

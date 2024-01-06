@@ -1,4 +1,6 @@
+import Fa from "solid-fa";
 import ExpenseAPI from "../../../API/expense.api";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 
 export type CreateExpenseModalProps = {
@@ -70,39 +72,42 @@ export default function CreateExpenseModal({ onCreatedHandler }: CreateExpenseMo
             <form onsubmit={onSubmitHandler} class="p-6 w-[200px] lg:w-[480px] flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Concepto</label>
-                    <input class="border-b outline-none py-1" type="text" name="concept" id="concept" placeholder="Concepto de gasto" />
+                    <input class="border-b border-neutral-400 outline-none py-1" type="text" name="concept" id="concept" placeholder="Concepto de gasto" />
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Tipo de Gasto</label>
                     {/* <input class="border-b outline-none" type="text" name="concept" id="concept" placeholder="Concepto de gasto..." /> */}
-                    <select class="border-b outline-none bg-transparent py-2" name="type" id="type">
+                    <select class="border-b border-neutral-400 outline-none bg-transparent py-2" name="type" id="type">
                         <option value="ESTIMATED">Estimado</option>
                         <option value="REAL">Real</option>
                     </select>
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Fecha</label>
-                    <input class="border-b outline-none py-1" type="date" name="date" id="date" placeholder="Fecha..." />
+                    <input class="border-b border-neutral-400 outline-none py-1" type="date" name="date" id="date" placeholder="Fecha..." />
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col gap-1">
                         <label for="concept" class="font-semibold">Dolares</label>
-                        <input step={'0.002'} class="border-b outline-none py-1" type="number" name="dollars" id="dollars" placeholder="Cantidad de Dolares" />
+                        <input step={'0.002'} class="border-b border-neutral-400 outline-none py-1" type="number" name="dollars" id="dollars" placeholder="Cantidad de Dolares" />
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="concept" class="font-semibold">Bolivares</label>
-                        <input step={'0.002'} class="border-b outline-none py-1" type="number" name="bolivares" id="bolivares" placeholder="Cantidad de Bolivares" />
+                        <input step={'0.002'} value={0} class="border-b border-neutral-400 outline-none py-1" type="number" name="bolivares" id="bolivares" placeholder="Cantidad de Bolivares" />
                     </div>
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Tasa de Cambio</label>
-                    <input step={'0.002'} class="border-b outline-none py-1" type="number" name="change_rate" id="change_rate" placeholder="Tasa de Cambio" />
+                    <input step={'0.002'} value={0} class="border-b border-neutral-400 outline-none py-1" type="number" name="change_rate" id="change_rate" placeholder="Tasa de Cambio" />
                 </div>
-                <button class="bg-blue-400 p-2 px-4 text-white rounded-xl text-center">Registrar</button>
+                <button class="flex gap-3 items-center justify-center bg-primary p-2 px-4 text-secondary hover:bg-secondary hover:text-primary font-semibold rounded-lg">Registrar</button>
             </form>
             
         </dialog>
-        <button class="bg-blue-400 p-2 px-4 text-white rounded-xl text-center" onclick={OpenModalHandler}>Registrar Gasto</button>
+        <button class="flex gap-3 items-center p-2 px-4 bg-primary  text-secondary hover:bg-secondary hover:text-primary font-semibold rounded-lg" onclick={OpenModalHandler}>
+            <Fa icon={faPlus} />
+            <span>Registrar Gasto</span>
+        </button>
         </>
     );
 }

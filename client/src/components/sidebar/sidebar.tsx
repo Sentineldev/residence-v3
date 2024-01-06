@@ -1,4 +1,7 @@
 import { JSXElement } from "solid-js";
+import Fa from "solid-fa";
+import { faFlag, faHouseChimney, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
+import { faHouseChimneyUser } from "@fortawesome/free-solid-svg-icons/faHouseChimneyUser";
 
 export type SideBarProps = {
     children: JSXElement ;
@@ -14,30 +17,24 @@ export default function SideBar({ children }: SideBarProps) {
                 </button>
             </div>
             <aside>
-                <nav class="col-span-1 h-full bg-neutral-400 hidden lg:block">
+                <nav class="col-span-1 h-full bg-primary hidden lg:block">
                     <ul class="flex flex-col gap-4 p-6">
                         <li>
-                            <a 
-                            class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
-                            href="/">Resumen
+                            <a href="/expenses" class="flex items-center text-2xl font-semibold gap-3 text-secondary hover:bg-secondary p-2 px-4 hover:text-primary rounded-lg">
+                                <Fa icon={faMoneyBill} />
+                                <span>Gastos</span>
                             </a>
                         </li>
                         <li>
-                            <a 
-                            class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
-                            href="/expenses">Gastos
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                            class="text-lg font-bold block p-2 hover:bg-neutral-600 hover:text-white rounded transition ease-in-out delay-0 " 
-                            href="/properties">Inmuebles
+                            <a href="/properties" class="flex items-center text-2xl font-semibold gap-3 text-secondary hover:bg-secondary p-2 px-4 hover:text-primary rounded-lg">
+                                <Fa icon={faHouseChimneyUser} />
+                                <span>Inmuebles</span>
                             </a>
                         </li>
                     </ul>
                 </nav>
             </aside>
-            <div class="col-span-4 h-full  overflow-y-auto">
+            <div class="col-span-4 h-full  overflow-y-auto bg-gray">
                 {children}
             </div>
         </div>

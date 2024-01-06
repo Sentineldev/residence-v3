@@ -72,33 +72,33 @@ export default function RegisterCharge() {
     return (
         <SideBar>
             <div class="p-4 h-full overflow-y-auto flex flex-col gap-3">
-                <header class="font-bold text-2xl py-2">{ type === "CHARGE" ? "Registro de Cargos" : "Registro de Pagos" }</header>
+                <header class="font-extrabold text-4xl py-2 text-secondary">{ type === "CHARGE" ? "Registro de Cargo" : "Registro de Pago" }</header>
                 <form onsubmit={onSubmitHandler} method="get" class="flex flex-col gap-3 h-full">
                     <div class="flex flex-col gap-1">
-                        <label for="concept">Concepto</label>
-                        <input class="border p-2 rounded-lg outline-none" type="text" name="concept" id="concept" placeholder="Concepto" />
+                        <label for="concept" class="text-secondary">Concepto</label>
+                        <input class="border border-neutral-400 p-2 rounded-lg outline-none" type="text" name="concept" id="concept" placeholder="Concepto" />
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label for="date">Fecha</label>
-                        <input class="border p-2 rounded-lg outline-none" type="date" name="date" id="date" placeholder="Fecha" />
+                        <label for="date" class="text-secondary">Fecha</label>
+                        <input class="border border-neutral-400 p-2 rounded-lg outline-none" type="date" name="date" id="date" placeholder="Fecha" />
                     </div>
                     <div class="grid lg:grid-cols-2 gap-3">
                         <div class="flex flex-col gap-1">
-                            <label for="dollars">Dolares</label>
-                            <input class="border p-2 rounded-lg outline-none" type="number" step={`0.2`} name="dollars" id="dollars" placeholder="Dolares" />
+                            <label for="dollars" class="text-secondary">Dolares</label>
+                            <input class="border border-neutral-400 p-2 rounded-lg outline-none" type="number" step={`0.2`} name="dollars" id="dollars" placeholder="Dolares" />
                         </div>
                         <div class="flex flex-col gap-1">
-                            <label for="dollars">Bolivares</label>
-                            <input class="border p-2 rounded-lg outline-none" type="number" step={`0.2`} name="bolivares" id="bolivares" placeholder="Bolivares" />
+                            <label for="dollars" class="text-secondary">Bolivares</label>
+                            <input class="border border-neutral-400 p-2 rounded-lg outline-none" type="number" step={`0.2`} name="bolivares" id="bolivares" placeholder="Bolivares" />
                         </div>
                     </div>
                     <div class="flex flex-col gap-1">
-                        <label for="change_rate">Tasa</label>
-                        <input class="border p-2 rounded-lg outline-none" type="number" step={`0.2`} name="change_rate" id="change_rate" placeholder="Tasa" />
+                        <label for="change_rate" class="text-secondary">Tasa</label>
+                        <input class="border border-neutral-400 p-2 rounded-lg outline-none" type="number" step={`0.2`} name="change_rate" id="change_rate" placeholder="Tasa" />
                     </div>
                     <div class="grid lg:grid-cols-2 gap-3 flex-1  h-full lg:overflow-y-auto">
                         <div class="border border-neutral-400 shadow-lg rounded-lg overflow-y-auto h-full">
-                            <header class="text-center font-bold text-lg py-2">Inmuebles</header>
+                            <header class=" text-secondary text-center font-semibold text-lg py-2">Inmuebles</header>
                             <Show  when={availableProperties()} fallback={<p>Loading...</p>}>
                                 <div class="px-6 py-4">
                                     <TransactionPropertyDisplay type="ADD" onSelect={onSelectHandler} properties={availableProperties()}/>
@@ -106,7 +106,7 @@ export default function RegisterCharge() {
                             </Show>
                         </div>
                         <div class="border border-neutral-400 shadow-lg rounded-lg lg:overflow-y-auto h-full">
-                            <header class="text-center font-bold text-lg py-2">Inmuebles Seleccionados</header>
+                            <header class="text-secondary text-center font-semibold text-lg py-2">Inmuebles Seleccionados</header>
                             <Show  when={selectedProperties()} fallback={<p>Loading...</p>}>
                                 <div class="px-6 py-4">
                                     <TransactionPropertyDisplay type="DELETE" onSelect={onRemoveHandler} properties={selectedProperties()}/>
@@ -115,7 +115,7 @@ export default function RegisterCharge() {
                         </div>
                     </div>
                     <div>
-                        <button type="submit" class="bg-blue-400 w-full p-2 text-white rounded-lg shadow-lg">Registrar</button>
+                        <button type="submit" class="bg-primary text-secondary font-semibold w-full p-2  rounded-lg shadow-lg">Registrar</button>
                     </div>
                 </form>
                 

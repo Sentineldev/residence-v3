@@ -1,4 +1,6 @@
+import Fa from "solid-fa";
 import { IncomingPropertyDto } from "../../API/dto/property.dto"
+import { faHouseChimneyUser } from "@fortawesome/free-solid-svg-icons";
 
 export type PropertyDisplayProps = {
     property: IncomingPropertyDto;
@@ -7,29 +9,35 @@ export default function PropertyDisplay({ property }: PropertyDisplayProps) {
 
     const { Balance, Floor, Symbol, Owner: { Name } } = property;
     return (
-        <div class="grid grid-cols-1 lg:grid-cols-5 border-b py-4 gap-2 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-5 border-b border-neutral-400 py-4 gap-2 items-center">
+            <div>
+                <div class="flex items-center gap-2">
+                    <a class="hover:text-primary" target="_blank" href={`/properties/${Symbol}`}>
+                        <Fa icon={faHouseChimneyUser} size="2x" />
+                    </a>
+                    <p>
+                        <span class="lg:hidden"><strong>Inmueble</strong>: </span>
+                        <span>{Symbol}</span>
+                    </p>
+                </div>
+            </div>
             <div>
                 <p>
                     <span class="lg:hidden"><strong>Propietario</strong>: </span>
-                    <span>{Name}</span>
+                    <span class="text-secondary">{Name}</span>
                 </p>
             </div>
-            <div>
-                <a target="_blank" class="text-blue-600 underline" href={`/properties/${Symbol}`}>
-                    <span class="lg:hidden"><strong>Inmueble</strong>: </span>
-                    <span>{Symbol}</span>
-                </a>
-            </div>
+            
             <div>
                 <header>
                     <span class="lg:hidden"><strong>Piso</strong>: </span>
-                    <span>{Floor}</span>
+                    <span class="text-secondary">{Floor}</span>
                 </header>
             </div>
             <div>
                 <header>
                     <span class="lg:hidden"><strong>Balance</strong>: </span>
-                    <span class={`${Balance  >= 0 ? `bg-green-400` : `bg-red-400`} px-4 py-2 rounded-lg`}>{Balance.toLocaleString()} $</span>
+                    <span class={`${Balance  >= 0 ? `bg-green-400` : `bg-red-400`} text-secondary px-4 py-2 rounded-lg`}>{Balance.toLocaleString()} $</span>
                 </header>
             </div>
             <div class="flex gap-4">
