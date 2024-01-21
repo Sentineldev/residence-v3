@@ -39,12 +39,73 @@ func ById(id string) (property.DBTransaction, error) {
 	return transaction, nil
 }
 
+func ChargeTransactionById(id string) (property.DBChargeTransaction, error) {
+
+	connection, err := database.Connection()
+
+	if err != nil {
+		return property.DBChargeTransaction{}, err
+	}
+
+	query := `
+	SELECT pt.id, pt.property_id , pt.concept, pt.type ,pt.date, pt.dollars, pt.bolivares, pt.change_rate, ct.dollars_payed, ct.status 
+	FROM 
+	charge_transaction ct 
+	JOIN property_transaction pt ON ct.transaction_id  = pt.id 
+	WHERE transaction_id = $1
+	`
+
+	var transaction property.DBChargeTransaction
+	row := connection.QueryRow(query, id).Scan(
+		&transaction.Transaction.Transaction.Id,
+		&transaction.Property,
+		&transaction.Transaction.Transaction.Concept,
+		&transaction.Transaction.Transaction.Type,
+		&transaction.Transaction.Transaction.Date,
+		&transaction.Transaction.Transaction.Dollars,
+		&transaction.Transaction.Transaction.Bolivares,
+		&transaction.Transaction.Transaction.ChangeRate,
+		&transaction.Transaction.DollarsPayed,
+		&transaction.Transaction.Status,
+	)
+
+	if row != nil {
+		if row == sql.ErrNoRows {
+			return property.DBChargeTransaction{}, row
+		}
+		return property.DBChargeTransaction{}, row
+	}
+	defer connection.Close()
+	return transaction, nil
+}
+
 func Delete(transactionId string, transactionType string) error {
 
 	connection, err := database.Connection()
 
 	if err != nil {
 		return err
+	}
+
+	if transactionType == "PAYMENT" {
+		transaction, err := ById(transactionId)
+		if err != nil {
+			return err
+		}
+		if err := AddPropertyBalance(transaction.Property, -transaction.Transaction.Dollars); err != nil {
+			return err
+		}
+	}
+
+	if transactionType == "CHARGE" {
+		transaction, err := ChargeTransactionById(transactionId)
+
+		if err != nil {
+			return err
+		}
+		if err := AddPropertyBalance(transaction.Property, transaction.Transaction.DollarsPayed); err != nil {
+			return err
+		}
 	}
 
 	query := "DELETE FROM property_transaction WHERE id = $1"
@@ -63,6 +124,7 @@ func Delete(transactionId string, transactionType string) error {
 	if _, err := connection.Query(query, transactionId); err != nil {
 		return err
 	}
+
 	defer connection.Close()
 
 	return nil
@@ -151,6 +213,54 @@ func ChargeTransactions(id string) ([]property.ChargeTransaction, error) {
 
 }
 
+func ChargeTransactionPayments(transactionId string) ([]property.ChargePayment, error) {
+	connection, err := database.Connection()
+
+	if err != nil {
+		return nil, err
+	}
+
+	query := `
+	SELECT pt.id, pt.property_id , pt.concept, pt.type ,pt.date, pt.dollars, pt.bolivares, pt.change_rate, cp.id as payment_id ,cp.dollars, cp.date 
+	FROM 
+	charge_payment cp 
+	JOIN property_transaction pt ON cp.transaction_id  = pt.id
+	WHERE cp.transaction_id = $1
+	`
+
+	rows, err := connection.Query(query, transactionId)
+	if err != nil {
+		return nil, err
+	}
+	var transactions []property.ChargePayment
+
+	for rows.Next() {
+		var transaction property.ChargePayment
+		if err := rows.Scan(
+			&transaction.Transaction.Transaction.Id,
+			&transaction.Transaction.Property,
+			&transaction.Transaction.Transaction.Concept,
+			&transaction.Transaction.Transaction.Type,
+			&transaction.Transaction.Transaction.Date,
+			&transaction.Transaction.Transaction.Dollars,
+			&transaction.Transaction.Transaction.Bolivares,
+			&transaction.Transaction.Transaction.ChangeRate,
+			&transaction.Id,
+			&transaction.Dollars,
+			&transaction.Date,
+		); err != nil {
+			return transactions, err
+		}
+		transactions = append(transactions, transaction)
+	}
+	if err = rows.Err(); err != nil {
+		return transactions, err
+	}
+
+	defer connection.Close()
+	return transactions, nil
+}
+
 func RegisterMultiple(transactions []property.DBTransaction) error {
 
 	connection, err := database.Connection()
@@ -194,19 +304,31 @@ func RegisterMultiple(transactions []property.DBTransaction) error {
 	if err != nil {
 		return err
 	}
-	result, err := statement.Exec(vals...)
-
-	if err != nil {
+	if _, err := statement.Exec(vals...); err != nil {
 		return err
 	}
-	result.RowsAffected()
+
 	defer connection.Close()
 
-	err = RegisterMultipleChargeTransaction(chargeTransactions)
-
-	if err != nil {
-		return err
+	if len(chargeTransactions) > 0 {
+		if err := RegisterMultipleChargeTransaction(chargeTransactions); err != nil {
+			return err
+		}
 	}
+	for _, property := range transactions {
+
+		// if property.Transaction.Type == "CHARGE" {
+		// 	if err := AddPropertyBalance(property.Property, -property.Transaction.Dollars); err != nil {
+		// 		return err
+		// 	}
+		// }
+		if property.Transaction.Type == "PAYMENT" {
+			if err := AddPropertyBalance(property.Property, property.Transaction.Dollars); err != nil {
+				return err
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -239,12 +361,9 @@ func RegisterMultipleChargeTransaction(transactions []property.DBChargeTransacti
 	if err != nil {
 		return err
 	}
-	result, err := statement.Exec(vals...)
-
-	if err != nil {
+	if _, err := statement.Exec(vals...); err != nil {
 		return err
 	}
-	result.RowsAffected()
 	defer connection.Close()
 
 	return nil
@@ -264,14 +383,66 @@ func AddChargeTransactionPayment(payment property.ChargePayment) error {
 		return err
 	}
 
-	result, err := statement.Exec(payment.Id, payment.Transaction.Transaction.Id, payment.Transaction.Property, payment.Dollars, payment.Date)
-
-	if err != nil {
+	if _, err := statement.Exec(payment.Id, payment.Transaction.Transaction.Id, payment.Transaction.Property, payment.Dollars, payment.Date); err != nil {
 		return err
 	}
-	result.RowsAffected()
+
+	if err := AddPropertyBalance(payment.Transaction.Property, -payment.Dollars); err != nil {
+		return err
+	}
+
+	if err := UpdateTransactionStatus(payment.Transaction.Transaction.Id); err != nil {
+		return err
+	}
 
 	defer connection.Close()
 
 	return nil
+}
+
+func UpdateTransactionStatus(id string) error {
+
+	transaction, err := ChargeTransactionById(id)
+	if err != nil {
+
+		return err
+	}
+
+	transactions, err := ChargeTransactionPayments(id)
+
+	if err != nil {
+
+		return err
+	}
+
+	var accumulator = 0.00
+	for _, element := range transactions {
+		accumulator += element.Dollars
+	}
+	transaction.Transaction.DollarsPayed = accumulator
+	if accumulator >= transaction.Transaction.Transaction.Dollars {
+		transaction.Transaction.Status = "PAYED"
+	}
+	connection, err := database.Connection()
+
+	if err != nil {
+		return err
+	}
+
+	query := "UPDATE charge_transaction ct SET dollars_payed = $1, status = $2 WHERE ct.transaction_id = $3"
+
+	statement, err := connection.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	if _, err := statement.Exec(transaction.Transaction.DollarsPayed, transaction.Transaction.Status, id); err != nil {
+		return err
+	}
+
+	defer connection.Close()
+
+	return nil
+
 }

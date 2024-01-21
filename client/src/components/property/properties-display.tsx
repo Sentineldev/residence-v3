@@ -11,10 +11,10 @@ export default function PropertiesDisplay({ properties }: PropertiesDisplayProps
         <div class="flex flex-col gap-4 py-8">
             <div class="hidden lg:grid lg:grid-cols-5 gap-2 items-center">
                 <div>
-                    <header class="font-semibold text-xl text-secondary">Propietario</header>
+                    <header class="font-semibold text-xl text-secondary">Inmueble</header>
                 </div>
                 <div>
-                    <header class="font-semibold text-xl text-secondary">Inmueble</header>
+                    <header class="font-semibold text-xl text-secondary">Propietario</header>
                 </div>
                 <div>
                     <header class="font-semibold text-xl text-secondary">Piso</header>

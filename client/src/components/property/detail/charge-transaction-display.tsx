@@ -1,12 +1,13 @@
-import { IncomingChargeTransactionDto } from "../../../API/dto/property.dto"
+import { IncomingChargeTransactionDto, IncomingPropertyDto } from "../../../API/dto/property.dto"
 import transactionStatusFormater from "../utils/transaction-status-formater";
 import DeleteTransactionModal from "./modals/delete-transaction-modal";
 import AddChargePaymentModal from "./modals/add-charge-payment-modal";
 
 export type ChargeTransactionDisplayProps = {
-    transaction: IncomingChargeTransactionDto
+    transaction: IncomingChargeTransactionDto;
+    property: IncomingPropertyDto;
 }
-export default function ChargeTransactionDisplay({ transaction }: ChargeTransactionDisplayProps) {
+export default function ChargeTransactionDisplay({ transaction, property }: ChargeTransactionDisplayProps) {
 
 
     const { Concept, Date, Dollars, Type } = transaction.Transaction;
@@ -42,7 +43,7 @@ export default function ChargeTransactionDisplay({ transaction }: ChargeTransact
                 </header>
             </div>
             <div class="flex gap-4">
-                <AddChargePaymentModal charge={transaction}/>
+                <AddChargePaymentModal property={property} charge={transaction}/>
                 <DeleteTransactionModal transaction={transaction.Transaction}/>
             </div>
         </div>

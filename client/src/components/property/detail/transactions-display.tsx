@@ -52,7 +52,7 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
             </div>
             <For each={transactions()}>
                 {(transaction) => 
-                (type() === "CHARGE" ? <ChargeTransactionDisplay  transaction={transaction} /> : <TransactionDisplay  transaction={transaction} />)}
+                (type() === "CHARGE" ? <ChargeTransactionDisplay property={property}  transaction={transaction} /> : <TransactionDisplay  transaction={transaction} />)}
             </For>
         </div>
     );

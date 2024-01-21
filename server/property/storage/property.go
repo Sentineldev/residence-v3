@@ -16,17 +16,26 @@ func GetProperties() ([]property.Property, error) {
 		return nil, errors.New(err.Error())
 	}
 
-	rows, err := connection.Query(`
+	// query := `
+	// SELECT p.id, p.symbol, p.floor,
+	// (
+	// (SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
+	// (SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE')
+	// ) balance ,
+	// r.id as owner_id,
+	// r.identification,
+	// r.name
+	// FROM property p join resident r on r.id = p.owner_id
+	// `
+	query := `
 	SELECT p.id, p.symbol, p.floor,
-	(
-	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
-	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
-	) balance ,
+	p.balance,
 	r.id as owner_id,
 	r.identification,
 	r.name
 	FROM property p join resident r on r.id = p.owner_id	
-	`)
+	`
+	rows, err := connection.Query(query)
 	// rows, err := connection.Query("SELECT * FROM property")
 
 	fmt.Printf("Rows: %+v: ", rows)
@@ -60,12 +69,20 @@ func GetBySymbol(symbol string) (property.Property, error) {
 	var findProperty property.Property
 
 	// query := "SELECT * FROM property where symbol = $1"
+	// query := `
+	// SELECT p.id, p.symbol, p.floor,
+	// (
+	// (SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
+	// (SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE')
+	// )balance ,
+	// r.id as owner_id,
+	// r.identification,
+	// r.name
+	// FROM property p join resident r on r.id = p.owner_id WHERE p.symbol = $1
+	// `
 	query := `
 	SELECT p.id, p.symbol, p.floor,
-	(
-	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'PAYMENT') -
-	(SELECT coalesce(SUM(dollars),0) from property_transaction pt where pt.property_id  = p.id and type = 'CHARGE') 
-	)balance ,
+	p.balance,
 	r.id as owner_id,
 	r.identification,
 	r.name
@@ -87,4 +104,33 @@ func GetBySymbol(symbol string) (property.Property, error) {
 	}
 	defer connection.Close()
 	return findProperty, nil
+}
+
+func AddPropertyBalance(property string, value float64) error {
+
+	connection, err := database.Connection()
+
+	if err != nil {
+		return err
+	}
+
+	query := `
+	UPDATE property SET balance = balance + $1
+	WHERE id = $2
+	`
+
+	statement, err := connection.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	if _, err := statement.Exec(value, property); err != nil {
+		return err
+	}
+
+	defer connection.Close()
+
+	return nil
+
 }

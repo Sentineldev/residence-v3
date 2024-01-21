@@ -1,13 +1,14 @@
 import { faHandPointUp } from "@fortawesome/free-solid-svg-icons";
 import Fa from "solid-fa";
-import { IncomingChargeTransactionDto } from "../../../../API/dto/property.dto";
+import { IncomingChargeTransactionDto, IncomingPropertyDto } from "../../../../API/dto/property.dto";
 import PropertyAPI from "../../../../API/property.api";
 
 
 export type AddChargePaymentModalProps = {
     charge: IncomingChargeTransactionDto;
+    property: IncomingPropertyDto;
 }
-export default function AddChargePaymentModal({ charge }: AddChargePaymentModalProps) {
+export default function AddChargePaymentModal({ charge, property }: AddChargePaymentModalProps) {
 
     const { Transaction } = charge;
 
@@ -41,6 +42,12 @@ export default function AddChargePaymentModal({ charge }: AddChargePaymentModalP
 
         const dollars  = form.elements.namedItem('dollars') as HTMLInputElement;
         const date  = form.elements.namedItem('date') as HTMLInputElement;
+
+        if (parseFloat(dollars.value) > property.Balance) {
+
+            alert('Saldo insuficiente');
+            return;
+        }
 
         const  result = await PropertyAPI.AddChargePayment(charge.Transaction.Id, { Dollars: parseFloat(dollars.value), Date: date.value })
 
