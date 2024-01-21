@@ -1,4 +1,8 @@
 
+
+export type TransactionType = 'CHARGE' | 'PAYMENT';
+export type ChargeTransactionStatus = "PENDING" | "PAYED";
+
 export type IncomingResidentDto = {
     Id: string;
     Identification: string;
@@ -19,8 +23,16 @@ export type IncomingTransactionDto = {
     Dollars: number;
     Bolivares: number;
     ChangeRate: number;
-    Type: 'CHARGE' | 'PAYMENT';
+    Type: TransactionType;
 }
+
+
+export type IncomingChargeTransactionDto = {
+    Transaction: IncomingTransactionDto;
+    Status: ChargeTransactionStatus;
+    DollarsPayed: number;
+}
+
 
 export type RegisterTransactionDto = {
     Concept: string;
@@ -29,4 +41,9 @@ export type RegisterTransactionDto = {
     Bolivares:  number;
     ChangeRate: number;
     Properties: string[];
+}
+
+export type AddChargePaymentBody = {
+    Dollars: number;
+    Date: string;
 }

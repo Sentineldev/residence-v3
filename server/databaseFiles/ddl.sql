@@ -8,7 +8,6 @@ CREATE TABLE expense(
     change_rate float
 );
 
-
 create table resident(
     id TEXT PRIMARY KEY,
     identification varchar(128) UNIQUE NOT NULL,
@@ -34,4 +33,23 @@ CREATE TABLE property_transaction(
     change_rate float,
     PRIMARY KEY(id, property_id),
     FOREIGN KEY(property_id) references"property"(id)
+);
+
+CREATE TABLE charge_transaction(
+    transaction_id TEXT,
+    property_id TEXT,
+    status TEXT, -- PENDING - PAYED
+    dollars_payed float,
+    PRIMARY KEY(transaction_id, property_id),
+    FOREIGN KEY(transaction_id, property_id) REFERENCES "property_transaction"(id, property_id)
+);
+
+CREATE TABLE charge_payment(
+    id TEXT,
+    transaction_id TEXT,
+    property_id TEXT,
+    dollars float,
+    date Date,
+    PRIMARY KEY(id, transaction_id, property_id),
+    FOREIGN KEY(transaction_id, property_id) REFERENCES "property_transaction"(id, property_id)
 );

@@ -10,6 +10,33 @@ import (
 	"github.com/google/uuid"
 )
 
+func AddChargePayment(context *gin.Context) {
+	id := context.Param("id")
+
+	transaction, err := storage.ById(id)
+
+	if err != nil {
+		context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	var body dto.AddTransactionChargeBody
+	context.BindJSON(&body)
+
+	err = storage.AddChargeTransactionPayment(property.ChargePayment{
+		Id:          uuid.NewString(),
+		Transaction: transaction,
+		Dollars:     body.Dollars,
+		Date:        body.Date,
+	})
+	if err != nil {
+		context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	context.Status(http.StatusOK)
+
+}
+
 func Properties(context *gin.Context) {
 	properties, err := storage.GetProperties()
 
@@ -36,7 +63,19 @@ func Transactions(context *gin.Context) {
 	propertyId := context.Param("propertyId")
 	transactionType := context.Param("type")
 
+	if transactionType == "CHARGE" {
+		transactions, err := storage.ChargeTransactions(propertyId)
+
+		if err != nil {
+			context.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
+			return
+		}
+		context.IndentedJSON(http.StatusOK, transactions)
+		return
+	}
+
 	transactions, err := storage.Transactions(propertyId, transactionType)
+
 	if err != nil {
 		context.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
 		return
@@ -87,4 +126,15 @@ func Transaction(context *gin.Context) {
 	}
 
 	context.IndentedJSON(http.StatusCreated, transactions)
+}
+
+func DeleteTransaction(context *gin.Context) {
+	id := context.Param("id")
+	transactionType := context.Param("type")
+
+	if err := storage.Delete(id, transactionType); err != nil {
+		context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	context.Status(http.StatusOK)
 }

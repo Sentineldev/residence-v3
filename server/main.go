@@ -37,5 +37,7 @@ func main() {
 	router.GET("/properties/:symbol", PropertyController.BySymbol)
 	router.GET("/properties/transaction/:propertyId/:type", PropertyController.Transactions)
 	router.POST("/properties/transaction/:type", PropertyController.Transaction)
+	router.POST("/properties/transaction/add-payment/:id", PropertyController.AddChargePayment)
+	router.DELETE("/properties/transaction/:id/:type", PropertyController.DeleteTransaction)
 	router.Run("0.0.0.0:8001")
 }

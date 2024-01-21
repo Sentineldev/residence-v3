@@ -14,3 +14,8 @@ type DBTransaction struct {
 	Transaction Transaction
 	Property    string
 }
+
+type DBChargeTransaction struct {
+	Transaction ChargeTransaction
+	Property    string
+}

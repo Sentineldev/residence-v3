@@ -12,7 +12,7 @@ export default function PropertyDisplay({ property }: PropertyDisplayProps) {
         <div class="grid grid-cols-1 lg:grid-cols-5 border-b border-neutral-400 py-4 gap-2 items-center">
             <div>
                 <div class="flex items-center gap-2">
-                    <a class="hover:text-primary" target="_blank" href={`/properties/${Symbol}`}>
+                    <a class="hover:text-primary"  href={`/properties/${Symbol}`}>
                         <Fa icon={faHouseChimneyUser} size="2x" />
                     </a>
                     <p>

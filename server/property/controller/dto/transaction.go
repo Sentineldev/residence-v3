@@ -8,3 +8,8 @@ type TransactionBody struct {
 	ChangeRate float64
 	Properties []string
 }
+
+type AddTransactionChargeBody struct {
+	Dollars float64
+	Date    string
+}

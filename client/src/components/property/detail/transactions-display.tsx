@@ -2,6 +2,7 @@ import { IncomingPropertyDto } from "../../../API/dto/property.dto"
 import { createSignal, createResource, For } from "solid-js";
 import PropertyAPI from "../../../API/property.api";
 import TransactionDisplay from "./transaction-display";
+import ChargeTransactionDisplay from "./charge-transaction-display";
 
 export type TransactionsDisplayProps = {
     property: IncomingPropertyDto;
@@ -35,7 +36,7 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
                 <option value="CHARGE">Cargos</option>
                 <option value="PAYMENT">Pagos</option>
             </select>
-            <div class="hidden lg:grid grid-cols-4 gap-2 py-4 items-center">
+            <div class="hidden lg:grid grid-cols-5 gap-2 py-4 items-center">
                 <div>
                     <header class="font-semibold text-secondary">Concepto</header>
                 </div>
@@ -50,7 +51,8 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
                 </div>
             </div>
             <For each={transactions()}>
-                {(transaction) => (<TransactionDisplay  transaction={transaction} />)}
+                {(transaction) => 
+                (type() === "CHARGE" ? <ChargeTransactionDisplay  transaction={transaction} /> : <TransactionDisplay  transaction={transaction} />)}
             </For>
         </div>
     );

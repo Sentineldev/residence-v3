@@ -1,4 +1,4 @@
-import { RegisterTransactionDto } from "./dto/property.dto"
+import { AddChargePaymentBody, RegisterTransactionDto } from "./dto/property.dto"
 import { API_URL } from "./url"
 
 export default class PropertyAPI {
@@ -30,6 +30,21 @@ export default class PropertyAPI {
         const response = await fetch(`${API_URL}/properties/transaction/${encodeURIComponent(type)}`, {
             method: 'POST',
             body: JSON.stringify(body)
+        })
+        return response;
+    }
+
+    public static async AddChargePayment(id: string, body: AddChargePaymentBody) {
+        const response = await fetch(`${API_URL}/properties/transaction/add-payment/${encodeURIComponent(id)}`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+        return response;
+    }
+
+    public static async DeleteTransaction(id: string, type: string) {
+        const response = await fetch(`${API_URL}/properties/transaction/${encodeURIComponent(id)}/${encodeURIComponent(type)}`, {
+            method: 'DELETE',
         })
         return response;
     }
