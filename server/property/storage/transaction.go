@@ -366,6 +366,12 @@ func RegisterMultipleChargeTransaction(transactions []property.DBChargeTransacti
 	}
 	defer connection.Close()
 
+	for _, element := range transactions {
+		if err := UpdatePropertyDebt(element.Property); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -396,6 +402,10 @@ func AddChargeTransactionPayment(payment property.ChargePayment) error {
 	}
 
 	defer connection.Close()
+
+	if err := UpdatePropertyDebt(payment.Transaction.Property); err != nil {
+		return err
+	}
 
 	return nil
 }

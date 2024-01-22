@@ -7,9 +7,9 @@ export type PropertyDisplayProps = {
 }
 export default function PropertyDisplay({ property }: PropertyDisplayProps) {
 
-    const { Balance, Floor, Symbol, Owner: { Name } } = property;
+    const { Balance, Debt, Floor, Symbol, Owner: { Name } } = property;
     return (
-        <div class="grid grid-cols-1 lg:grid-cols-5 border-b border-neutral-400 py-4 gap-2 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-6 border-b border-neutral-400 py-4 gap-4 items-center">
             <div>
                 <div class="flex items-center gap-2">
                     <a class="hover:text-primary"  href={`/properties/${Symbol}`}>
@@ -38,6 +38,12 @@ export default function PropertyDisplay({ property }: PropertyDisplayProps) {
                 <header>
                     <span class="lg:hidden"><strong>Balance</strong>: </span>
                     <span class={`${Balance  >= 0 ? `bg-green-400` : `bg-red-400`} text-secondary px-4 py-2 rounded-lg`}>{Balance.toLocaleString()} $</span>
+                </header>
+            </div>
+            <div>
+                <header>
+                    <span class="lg:hidden"><strong>Deuda</strong>: </span>
+                    <span class={`${Debt  === 0 ? `bg-green-400` : `bg-red-400`} text-secondary px-4 py-2 rounded-lg`}>{Debt.toLocaleString()} $</span>
                 </header>
             </div>
             <div class="flex gap-4">

@@ -67,6 +67,20 @@ export default function ExpenseIndex() {
         }
     }
 
+    function onDateChange(e: Event & {
+        currentTarget: HTMLInputElement;
+        target: HTMLInputElement;
+    }) {
+        if (e.target.value === '') {
+            setDateFilter(new Date().toISOString().split('T')[0]);
+        }
+        else {
+            setDateFilter(e.target.value);
+        }
+        queryExpenses();
+        queryStats();
+    }
+
     return (
         <SideBar>
             <div class="p-12 flex flex-col h-full overflow-y-auto">
@@ -83,7 +97,8 @@ export default function ExpenseIndex() {
                     </div>
                     <div class="pt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <input onkeyup={(e) => { setSearchFilter((e.target as HTMLInputElement).value); queryExpenses(); }} class="border-b border-neutral-400 py-2 outline-none" type="text" name="search" id="search" placeholder="Buscar concepto" />
-                        <input onchange={(e) => { setDateFilter((e.target as HTMLInputElement).value); queryExpenses(); queryStats() }} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" />
+                        {/* <input onchange={(e) => { setDateFilter((e.target as HTMLInputElement).value); queryExpenses(); queryStats() }} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" /> */}
+                        <input onchange={onDateChange} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" />
                         <select onchange={(e) => { setTypeFilter(e.target.value); queryExpenses(); }} class="border-b border-neutral-400 bg-transparent outline-none py-2" name="type" id="type">
                             <option value="REAL">Real</option>
                             <option value="ESTIMATED">Estimado</option>

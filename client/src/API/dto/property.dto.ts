@@ -13,6 +13,7 @@ export type IncomingPropertyDto = {
     Symbol: string;
     Floor: number;
     Balance: number;
+    Debt: number;
     Owner: IncomingResidentDto;
 }
 

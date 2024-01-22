@@ -14,7 +14,7 @@ export default function ExpenseDisplay({ expense,  selectExpense}: ExpenseDispla
     }
 
     return (
-        <div class="grid grid-cols-1 lg:grid-cols-5 border-b border-neutral-400 py-2 gap-4 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-5 border-b border-neutral-400 py-2 gap-6 items-center">
             <div>
                 <header>
                     <span class="lg:hidden"><strong>Concepto</strong>: </span>
@@ -35,8 +35,8 @@ export default function ExpenseDisplay({ expense,  selectExpense}: ExpenseDispla
             </div>
             <div>
                 <header>
-                    <span class="lg:hidden"><strong>Tipo</strong>: </span>
-                    <span>{Dollars.toLocaleString()}</span>
+                    <span class="lg:hidden"><strong>Dolares</strong>: </span>
+                    <span>{Dollars.toLocaleString()} $</span>
                 </header>
             </div>
             <div class="flex gap-4">

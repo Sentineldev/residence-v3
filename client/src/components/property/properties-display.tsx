@@ -9,7 +9,7 @@ export default function PropertiesDisplay({ properties }: PropertiesDisplayProps
 
     return (
         <div class="flex flex-col gap-4 py-8">
-            <div class="hidden lg:grid lg:grid-cols-5 gap-2 items-center">
+            <div class="hidden lg:grid lg:grid-cols-6 gap-4 items-center">
                 <div>
                     <header class="font-semibold text-xl text-secondary">Inmueble</header>
                 </div>
@@ -21,6 +21,9 @@ export default function PropertiesDisplay({ properties }: PropertiesDisplayProps
                 </div>
                 <div>
                     <header class="font-semibold text-xl text-secondary">Balance</header>
+                </div>
+                <div>
+                    <header class="font-semibold text-xl text-secondary">Deuda</header>
                 </div>
             </div>
             <div class="flex flex-col gap-4">

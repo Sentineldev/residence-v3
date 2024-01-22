@@ -30,6 +30,7 @@ func GetProperties() ([]property.Property, error) {
 	query := `
 	SELECT p.id, p.symbol, p.floor,
 	p.balance,
+	p.debt,
 	r.id as owner_id,
 	r.identification,
 	r.name
@@ -48,7 +49,7 @@ func GetProperties() ([]property.Property, error) {
 
 	for rows.Next() {
 		var property property.Property
-		if err := rows.Scan(&property.Id, &property.Symbol, &property.Floor, &property.Balance, &property.Owner.Id, &property.Owner.Identification, &property.Owner.Name); err != nil {
+		if err := rows.Scan(&property.Id, &property.Symbol, &property.Floor, &property.Balance, &property.Debt, &property.Owner.Id, &property.Owner.Identification, &property.Owner.Name); err != nil {
 			return properties, err
 		}
 		properties = append(properties, property)
@@ -83,6 +84,7 @@ func GetBySymbol(symbol string) (property.Property, error) {
 	query := `
 	SELECT p.id, p.symbol, p.floor,
 	p.balance,
+	p.debt,
 	r.id as owner_id,
 	r.identification,
 	r.name
@@ -93,6 +95,7 @@ func GetBySymbol(symbol string) (property.Property, error) {
 			&findProperty.Symbol,
 			&findProperty.Floor,
 			&findProperty.Balance,
+			&findProperty.Debt,
 			&findProperty.Owner.Id,
 			&findProperty.Owner.Identification,
 			&findProperty.Owner.Name)
@@ -133,4 +136,31 @@ func AddPropertyBalance(property string, value float64) error {
 
 	return nil
 
+}
+
+func UpdatePropertyDebt(property string) error {
+
+	connection, err := database.Connection()
+
+	if err != nil {
+		return err
+	}
+
+	query := `
+	UPDATE property p
+	SET debt = (SELECT SUM(dollars - dollars_payed) FROM charge_transaction ct JOIN property_transaction pt ON ct.transaction_id = pt.id WHERE pt.property_id = $1)
+	WHERE p.id = $1
+	`
+	statement, err := connection.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	if _, err := statement.Exec(property); err != nil {
+		return err
+	}
+
+	defer connection.Close()
+
+	return nil
 }

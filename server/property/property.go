@@ -11,5 +11,6 @@ type Property struct {
 	Symbol  string
 	Floor   int32
 	Balance float64
+	Debt    float64
 	Owner   Resident
 }

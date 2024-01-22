@@ -51,9 +51,14 @@ func GetExpenses(expenseType string, date string, search string) ([]expense.Expe
 		query += "%%" + element + "%%"
 	}
 
-	rows, err := connection.Query("SELECT * FROM expense where type = $1 and date >= $2 and LOWER(concept) like $3",
+	// rows, err := connection.Query("SELECT * FROM expense where type = $1 and date >= $2 and LOWER(concept) like $3",
+	// 	expenseType,
+	// 	date,
+	// 	fmt.Sprintf("%%"+strings.ToLower(query)+"%%"))
+	rows, err := connection.Query("SELECT * FROM expense where type = $1 and EXTRACT(MONTH FROM date) = $2 and EXTRACT(YEAR FROM date) = $3 and LOWER(concept) like $4",
 		expenseType,
-		date,
+		strings.Split(date, "-")[1],
+		strings.Split(date, "-")[0],
 		fmt.Sprintf("%%"+strings.ToLower(query)+"%%"))
 	if err != nil {
 		return nil, err
