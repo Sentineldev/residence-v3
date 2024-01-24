@@ -148,7 +148,7 @@ func UpdatePropertyDebt(property string) error {
 
 	query := `
 	UPDATE property p
-	SET debt = (SELECT SUM(dollars - dollars_payed) FROM charge_transaction ct JOIN property_transaction pt ON ct.transaction_id = pt.id WHERE pt.property_id = $1)
+	SET debt = (SELECT coalesce(SUM(dollars - dollars_payed),0) FROM charge_transaction ct JOIN property_transaction pt ON ct.transaction_id = pt.id WHERE pt.property_id = $1)
 	WHERE p.id = $1
 	`
 	statement, err := connection.Prepare(query)

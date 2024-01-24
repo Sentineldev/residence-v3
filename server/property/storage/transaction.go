@@ -87,6 +87,11 @@ func Delete(transactionId string, transactionType string) error {
 		return err
 	}
 
+	transaction, err := ById(transactionId)
+	if err != nil {
+		return err
+	}
+
 	if transactionType == "PAYMENT" {
 		transaction, err := ById(transactionId)
 		if err != nil {
@@ -126,6 +131,7 @@ func Delete(transactionId string, transactionType string) error {
 	}
 
 	defer connection.Close()
+	UpdatePropertyDebt(transaction.Property)
 
 	return nil
 }
