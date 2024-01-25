@@ -20,8 +20,11 @@ export default class PropertyAPI {
         return data
     }
 
-    public static async getTransactions(id: string, type: 'PAYMENT' | 'CHARGE' ) {
-        const response = await fetch(`${API_URL}/properties/transaction/${encodeURIComponent(id)}/${encodeURIComponent(type)}`)
+    public static async getTransactions(id: string, type: 'PAYMENT' | 'CHARGE', date: string) {
+
+        const url = new URL(`${API_URL}/properties/transaction/${encodeURIComponent(id)}/${encodeURIComponent(type)}`)
+        url.searchParams.set('date', date);
+        const response = await fetch(url)
         const data = await response.json()
         return data
     }

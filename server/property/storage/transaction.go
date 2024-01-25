@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"server/database"
 	"server/property"
+	"strings"
 )
 
 func ById(id string) (property.DBTransaction, error) {
@@ -136,7 +137,7 @@ func Delete(transactionId string, transactionType string) error {
 	return nil
 }
 
-func Transactions(id string, transactionType string) ([]property.Transaction, error) {
+func Transactions(id string, transactionType string, date string) ([]property.Transaction, error) {
 
 	connection, err := database.Connection()
 
@@ -144,9 +145,16 @@ func Transactions(id string, transactionType string) ([]property.Transaction, er
 		return nil, err
 	}
 
-	query := "SELECT id, concept, type, date,  dollars, bolivares, change_rate FROM property_transaction WHERE property_id = $1 AND type = $2"
+	query := `
+	SELECT id, concept, type, date,  dollars, bolivares, change_rate FROM property_transaction WHERE property_id = $1 AND type = $2
+	AND EXTRACT(YEAR FROM date) = $3 AND EXTRACT(MONTH FROM date) = $4
+	`
+	// query := `
+	// SELECT id, concept, type, date,  dollars, bolivares, change_rate FROM property_transaction WHERE property_id = $1 AND type = $2
+	// `
 
-	rows, err := connection.Query(query, id, transactionType)
+	// rows, err := connection.Query(query, id, transactionType)
+	rows, err := connection.Query(query, id, transactionType, strings.Split(date, "-")[0], strings.Split(date, "-")[1])
 
 	if err != nil {
 		return nil, err
@@ -172,7 +180,7 @@ func Transactions(id string, transactionType string) ([]property.Transaction, er
 	return transactions, nil
 }
 
-func ChargeTransactions(id string) ([]property.ChargeTransaction, error) {
+func ChargeTransactions(id string, date string) ([]property.ChargeTransaction, error) {
 	connection, err := database.Connection()
 
 	if err != nil {
@@ -180,13 +188,21 @@ func ChargeTransactions(id string) ([]property.ChargeTransaction, error) {
 	}
 
 	query := `
-	SELECT pt.id, pt.concept, pt.type ,pt.date, pt.dollars, pt.bolivares, pt.change_rate, ct.dollars_payed, ct.status 
-	FROM 
-	charge_transaction ct 
-	JOIN property_transaction pt ON ct.transaction_id  = pt.id 
-	WHERE ct.property_id = $1
+	SELECT pt.id, pt.concept, pt.type ,pt.date, pt.dollars, pt.bolivares, pt.change_rate, ct.dollars_payed, ct.status
+	FROM
+	charge_transaction ct
+	JOIN property_transaction pt ON ct.transaction_id  = pt.id
+	WHERE ct.property_id = $1 AND EXTRACT(YEAR FROM pt.date) = $2 AND EXTRACT(MONTH FROM pt.date) = $3
 	`
-	rows, err := connection.Query(query, id)
+	// query := `
+	// SELECT pt.id, pt.concept, pt.type ,pt.date, pt.dollars, pt.bolivares, pt.change_rate, ct.dollars_payed, ct.status
+	// FROM
+	// charge_transaction ct
+	// JOIN property_transaction pt ON ct.transaction_id  = pt.id
+	// WHERE ct.property_id = $1
+	// `
+	rows, err := connection.Query(query, id, strings.Split(date, "-")[0], strings.Split(date, "-")[1])
+	// rows, err := connection.Query(query, id)
 	if err != nil {
 		return nil, err
 	}

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"server/property"
 	"server/property/controller/dto"
@@ -63,8 +64,10 @@ func Transactions(context *gin.Context) {
 	propertyId := context.Param("propertyId")
 	transactionType := context.Param("type")
 
+	date := context.Query("date")
+
 	if transactionType == "CHARGE" {
-		transactions, err := storage.ChargeTransactions(propertyId)
+		transactions, err := storage.ChargeTransactions(propertyId, date)
 
 		if err != nil {
 			context.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})
@@ -74,7 +77,9 @@ func Transactions(context *gin.Context) {
 		return
 	}
 
-	transactions, err := storage.Transactions(propertyId, transactionType)
+	transactions, err := storage.Transactions(propertyId, transactionType, date)
+
+	fmt.Printf("%+v", transactions)
 
 	if err != nil {
 		context.IndentedJSON(http.StatusNotFound, gin.H{"message": err.Error()})

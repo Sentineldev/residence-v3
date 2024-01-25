@@ -84,7 +84,7 @@ export default function ExpenseIndex() {
     return (
         <SideBar>
             <div class="p-12 flex flex-col h-full overflow-y-auto">
-                <Show when={stats()} fallback={<p>Loading stats...</p>}>
+                <Show when={stats()}>
                     <div class="pb-12">
                         <ExpenseStats stats={stats()}/>
                     </div>
@@ -98,13 +98,13 @@ export default function ExpenseIndex() {
                     <div class="pt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <input onkeyup={(e) => { setSearchFilter((e.target as HTMLInputElement).value); queryExpenses(); }} class="border-b border-neutral-400 py-2 outline-none" type="text" name="search" id="search" placeholder="Buscar concepto" />
                         {/* <input onchange={(e) => { setDateFilter((e.target as HTMLInputElement).value); queryExpenses(); queryStats() }} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" /> */}
-                        <input onchange={onDateChange} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" />
+                        <input value={dateFilter()} onchange={onDateChange} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" />
                         <select onchange={(e) => { setTypeFilter(e.target.value); queryExpenses(); }} class="border-b border-neutral-400 bg-transparent outline-none py-2" name="type" id="type">
                             <option value="REAL">Real</option>
                             <option value="ESTIMATED">Estimado</option>
                         </select>
                     </div>
-                    <Show when={expenseList()} fallback={<p> loading...</p>} >
+                    <Show when={expenseList()}>
                         <div>
                             <ExpensesDisplay selectExpense={onSelectExpenseHandler} expenses={expenseList()!} />
                         </div>

@@ -19,8 +19,12 @@ export default function DetailPropertyIndex() {
                         <p class="text-2xl font-semibold text-secondary">Inmueble <strong>{property()?.Symbol}</strong></p>
                         <p class="text-secondary">Propietario <strong>{property()?.Owner.Name}</strong></p>
                         <p class="text-lg font-semibold text-secondary flex items-center gap-2">
-                            <span class={`${property()?.Balance!  >= 0 ? `bg-green-400` : `bg-red-400`} px-6  py-1 rounded-lg`}>{property()?.Balance.toLocaleString()} $</span>
+                            <span class={`${property()?.Debt!  <= 0 ? `bg-green-400` : `bg-red-400`} px-6  py-1 rounded-lg`}>Deuda: {property()?.Debt.toLocaleString()} $</span>
                         </p>
+                        <p class="text-lg font-semibold text-secondary flex items-center gap-2">
+                            <span class={`${property()?.Balance!  >= 0 ? `bg-green-400` : `bg-red-400`} px-6  py-1 rounded-lg`}>Balance: {property()?.Balance.toLocaleString()} $</span>
+                        </p>
+                        
                     </div>
                     <TransactionsDisplay property={property()!} />
                 </Show>

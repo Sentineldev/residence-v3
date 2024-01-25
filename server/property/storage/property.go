@@ -35,6 +35,7 @@ func GetProperties() ([]property.Property, error) {
 	r.identification,
 	r.name
 	FROM property p join resident r on r.id = p.owner_id	
+	ORDER BY p.floor ASC
 	`
 	rows, err := connection.Query(query)
 	// rows, err := connection.Query("SELECT * FROM property")
