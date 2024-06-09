@@ -1,11 +1,9 @@
-import { createResource, createSignal } from "solid-js";
-import ExpenseAPI from "../API/expense.api";
+import { createSignal } from "solid-js";
 
 export default function Home() {
 
     const [name, setName] = createSignal("Jesus");
 
-    const [expenseList] = createResource<any[]>(ExpenseAPI.getExpenses)
 
 
     function onClickHandler() {

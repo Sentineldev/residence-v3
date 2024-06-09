@@ -3,15 +3,27 @@ package main
 import (
 	ExpenseController "server/expense/controller"
 	PropertyController "server/property/controller"
+	"strings"
 	"time"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 
-	router := gin.Default()
+	app := gin.Default()
+
+	app.Use(static.Serve("/", static.LocalFile("../build/dist", true)))
+	app.NoRoute(func(c *gin.Context) {
+		if !strings.HasPrefix(c.Request.RequestURI, "/api") {
+			c.File("../build/dist/index.html")
+		}
+		//default 404 page not found
+	})
+
+	router := app.Group("/api")
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
@@ -42,5 +54,5 @@ func main() {
 	router.DELETE("/properties/transaction/charge-payment/:paymentId", PropertyController.DeleteChargePayment)
 	router.DELETE("/properties/transaction/:id/:type", PropertyController.DeleteTransaction)
 
-	router.Run("0.0.0.0:8001")
+	app.Run("0.0.0.0:8001")
 }
