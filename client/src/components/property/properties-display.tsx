@@ -26,7 +26,7 @@ export default function PropertiesDisplay({ properties }: PropertiesDisplayProps
                     <header class="font-semibold text-xl text-secondary">Deuda</header>
                 </div>
             </div>
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
                 <For each={properties}>
                     {(property) => (<PropertyDisplay  property={property} />)}
                 </For>

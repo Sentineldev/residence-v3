@@ -40,6 +40,34 @@ func ById(id string) (property.DBTransaction, error) {
 	return transaction, nil
 }
 
+func PaymentById(id string) (property.DBChargePayment, error) {
+	connection, err := database.Connection()
+
+	if err != nil {
+		return property.DBChargePayment{}, err
+	}
+
+	query := "SELECT * FROM charge_payment WHERE id = $1"
+
+	var payment property.DBChargePayment
+	row := connection.QueryRow(query, id).Scan(
+		&payment.Id,
+		&payment.TransactionId,
+		&payment.PropertyId,
+		&payment.Dollars,
+		&payment.Date,
+	)
+
+	if row != nil {
+		if row == sql.ErrNoRows {
+			return property.DBChargePayment{}, row
+		}
+		return property.DBChargePayment{}, row
+	}
+	defer connection.Close()
+	return payment, nil
+}
+
 func ChargeTransactionById(id string) (property.DBChargeTransaction, error) {
 
 	connection, err := database.Connection()
@@ -78,6 +106,39 @@ func ChargeTransactionById(id string) (property.DBChargeTransaction, error) {
 	}
 	defer connection.Close()
 	return transaction, nil
+}
+
+func DeleteChargePayment(paymentId string) error {
+
+	payment, err := PaymentById(paymentId)
+
+	if err != nil {
+		return err
+	}
+
+	connection, err := database.Connection()
+	if err != nil {
+		return err
+	}
+
+	if err != nil {
+		return err
+	}
+
+	query := `DELETE FROM charge_payment WHERE id = $1`
+
+	fmt.Printf("%s\n", paymentId)
+
+	if _, err := connection.Query(query, paymentId); err != nil {
+		return err
+	}
+
+	defer connection.Close()
+
+	UpdateTransactionStatus(payment.TransactionId)
+	UpdatePropertyDebt(payment.PropertyId)
+	AddPropertyBalance(payment.PropertyId, payment.Dollars)
+	return nil
 }
 
 func Delete(transactionId string, transactionType string) error {
@@ -254,6 +315,7 @@ func ChargeTransactionPayments(transactionId string) ([]property.ChargePayment, 
 	if err != nil {
 		return nil, err
 	}
+
 	var transactions []property.ChargePayment
 
 	for rows.Next() {
@@ -278,7 +340,6 @@ func ChargeTransactionPayments(transactionId string) ([]property.ChargePayment, 
 	if err = rows.Err(); err != nil {
 		return transactions, err
 	}
-
 	defer connection.Close()
 	return transactions, nil
 }

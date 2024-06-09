@@ -1,9 +1,11 @@
 import SideBar from "../../sidebar/sidebar";
 import PropertyAPI from "../../../API/property.api";
-import { Show, createResource, createSignal } from "solid-js";
+import { Show, createResource, createSignal, onMount } from "solid-js";
 import { IncomingPropertyDto } from "../../../API/dto/property.dto";
 import TransactionPropertyDisplay from "./transaction-property-display";
 import { useParams } from "@solidjs/router";
+import flatpickr from "flatpickr";
+import 'flatpickr/dist/themes/confetti.css'
 
 export default function RegisterCharge() {
 
@@ -22,6 +24,15 @@ export default function RegisterCharge() {
         }
     );
 
+
+    onMount(() => {
+        flatpickr("#date", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            static: true,
+        });
+    });
 
     function onSelectHandler(property: IncomingPropertyDto) {
         setSelectedProperties((value) => [...value, property]);
@@ -80,7 +91,7 @@ export default function RegisterCharge() {
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="date" class="text-secondary">Fecha</label>
-                        <input class="border border-neutral-400 p-2 rounded-lg outline-none" type="date" name="date" id="date" placeholder="Fecha" />
+                        <input class="border border-neutral-400 p-2 rounded-lg outline-none w-full" type="date" name="date" id="date" placeholder="Fecha" />
                     </div>
                     <div class="grid lg:grid-cols-2 gap-3">
                         <div class="flex flex-col gap-1">

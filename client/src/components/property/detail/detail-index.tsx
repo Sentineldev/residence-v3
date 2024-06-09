@@ -24,7 +24,6 @@ export default function DetailPropertyIndex() {
                         <p class="text-lg font-semibold text-secondary flex items-center gap-2">
                             <span class={`${property()?.Balance!  >= 0 ? `bg-green-400` : `bg-red-400`} px-6  py-1 rounded-lg`}>Balance: {property()?.Balance.toLocaleString()} $</span>
                         </p>
-                        
                     </div>
                     <TransactionsDisplay property={property()!} />
                 </Show>

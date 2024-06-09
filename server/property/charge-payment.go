@@ -6,3 +6,11 @@ type ChargePayment struct {
 	Dollars     float64
 	Date        string
 }
+
+type DBChargePayment struct {
+	Id            string
+	TransactionId string
+	PropertyId    string
+	Dollars       float64
+	Date          string
+}

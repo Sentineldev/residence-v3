@@ -133,6 +133,15 @@ func Transaction(context *gin.Context) {
 	context.IndentedJSON(http.StatusCreated, transactions)
 }
 
+func DeleteChargePayment(context *gin.Context) {
+
+	paymentId := context.Param("paymentId")
+	if err := storage.DeleteChargePayment(paymentId); err != nil {
+		context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+	}
+	context.Status(http.StatusOK)
+}
+
 func DeleteTransaction(context *gin.Context) {
 	id := context.Param("id")
 	transactionType := context.Param("type")
@@ -142,4 +151,18 @@ func DeleteTransaction(context *gin.Context) {
 		return
 	}
 	context.Status(http.StatusOK)
+}
+
+func ChargeTransactionsPayments(context *gin.Context) {
+
+	transactionId := context.Param("transactionId")
+
+	payments, err := storage.ChargeTransactionPayments(transactionId)
+	if err != nil {
+		fmt.Printf("%+v\n", payments)
+		context.IndentedJSON(http.StatusOK, "Something went wrong!")
+		return
+	}
+	context.IndentedJSON(http.StatusOK, payments)
+
 }

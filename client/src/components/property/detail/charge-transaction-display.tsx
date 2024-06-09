@@ -2,6 +2,7 @@ import { IncomingChargeTransactionDto, IncomingPropertyDto } from "../../../API/
 import transactionStatusFormater from "../utils/transaction-status-formater";
 import DeleteTransactionModal from "./modals/delete-transaction-modal";
 import AddChargePaymentModal from "./modals/add-charge-payment-modal";
+import ShowChargeTransactionPayments from "./modals/show-charge-transaction-payments";
 
 export type ChargeTransactionDisplayProps = {
     transaction: IncomingChargeTransactionDto;
@@ -14,7 +15,7 @@ export default function ChargeTransactionDisplay({ transaction, property }: Char
     return (
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-2 py-4 items-center border-b border-b-neutral-300">
             <div>
-                <p class={`${transaction.Status === "PAYED" ? 'bg-green-400' : 'bg-primary'} w-fit p-1 px-2 rounded text-white my-2`}>{transactionStatusFormater(transaction.Status)}</p>
+                <p class={`${transaction.Status === "PAYED" ? 'bg-green-400' : 'bg-primary'} w-fit p-1 px-2 rounded text-secondary font-semibold my-2`}>{transactionStatusFormater(transaction.Status)}</p>
                 <header>
                     <span class="lg:hidden font-semibold text-secondary">Concepto: </span>
                     <span>{Concept.length === 0 ? "Sin Concepto" : Concept}</span>
@@ -45,6 +46,7 @@ export default function ChargeTransactionDisplay({ transaction, property }: Char
             <div class="flex gap-4">
                 <AddChargePaymentModal property={property} charge={transaction}/>
                 <DeleteTransactionModal transaction={transaction.Transaction}/>
+                <ShowChargeTransactionPayments charge={transaction} />
             </div>
         </div>
     );

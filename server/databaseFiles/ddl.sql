@@ -19,7 +19,7 @@ CREATE TABLE property(
     symbol varchar(32) UNIQUE NOT NULL,
     floor int not null,
     balance float not null default 0,
-    debt float not null default 0 
+    debt float not null default 0,
     FOREIGN KEY(owner_id) references "resident"(id)
 );
 

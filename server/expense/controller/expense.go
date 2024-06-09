@@ -25,19 +25,20 @@ func Stats(context *gin.Context) {
 		return
 	}
 
-	stats, err := storage.Stats(month, year)
+	stats, _ := storage.Stats(month, year)
 
 	context.IndentedJSON(http.StatusOK, stats)
-	return
 
 }
 
 func Expenses(context *gin.Context) {
+
 	var typeFilter string
 	var dateFilter string
 	typeQuery := context.Query("type")
 	dateQuery := context.Query("date")
 	searchQuery, err := url.QueryUnescape(context.Query("search"))
+
 	typeFilter = typeQuery
 
 	if typeQuery != "ESTIMATED" && typeQuery != "REAL" {
@@ -49,6 +50,11 @@ func Expenses(context *gin.Context) {
 	}
 
 	dateFilter = dateQuery
+
+	if len(dateFilter) == 0 {
+		context.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Wrong parameters"})
+		return
+	}
 	expenses, err := storage.GetExpenses(typeFilter, dateFilter, searchQuery)
 
 	if err != nil {

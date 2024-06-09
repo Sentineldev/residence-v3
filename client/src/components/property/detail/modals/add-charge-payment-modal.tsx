@@ -2,6 +2,9 @@ import { faHandPointUp } from "@fortawesome/free-solid-svg-icons";
 import Fa from "solid-fa";
 import { IncomingChargeTransactionDto, IncomingPropertyDto } from "../../../../API/dto/property.dto";
 import PropertyAPI from "../../../../API/property.api";
+import flatpickr from "flatpickr";
+import { onMount } from "solid-js";
+import 'flatpickr/dist/themes/confetti.css'
 
 
 export type AddChargePaymentModalProps = {
@@ -60,6 +63,14 @@ export default function AddChargePaymentModal({ charge, property }: AddChargePay
         alert('Hubo un error al registrar el pago');
 
     }
+    onMount(() => {
+        flatpickr("#date", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            static: true,
+        });
+    });
 
     return (
         <>
@@ -73,7 +84,7 @@ export default function AddChargePaymentModal({ charge, property }: AddChargePay
             <form onsubmit={onSubmitHandler} class="p-6 w-[200px] lg:w-[480px] flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Fecha</label>
-                    <input required class="border-b border-neutral-400 outline-none py-1" type="date" name="date" id="date" placeholder="Fecha..." />
+                    <input required class="border-b border-neutral-400 outline-none py-1 w-full" type="date" name="date" id="date" placeholder="Fecha..." />
                 </div>
                 <div class="flex flex-col gap-1">
                     <label for="dollars" class="font-semibold">Dolares</label>

@@ -1,7 +1,9 @@
+import flatpickr from "flatpickr";
+import { onMount } from "solid-js";
 import { IncomingExpenseDto } from "../../../API/dto/expense.dto";
 import ExpenseAPI from "../../../API/expense.api";
 
-
+import 'flatpickr/dist/themes/confetti.css'
 export type UpdateExpenseModalProps = {
     onCreatedHandler: () => void;
     expense: IncomingExpenseDto;
@@ -18,6 +20,16 @@ export default function UpdateExpenseModal({ onCreatedHandler, expense, selectEx
             dialog.close();
         }
     }
+
+    onMount(() => {
+        flatpickr("#update-date", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            static: true,
+
+        });
+    });
 
     async function onSubmitHandler(e: Event & {
         submitter: HTMLElement;
@@ -64,6 +76,10 @@ export default function UpdateExpenseModal({ onCreatedHandler, expense, selectEx
             </button>
             <form onsubmit={onSubmitHandler} class="p-6 w-[200px] lg:w-[480px] flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
+                    <label for="concept" class="font-semibold">Fecha</label>
+                    <input value={expense.Date.split('T')[0]} class="border-b border-neutral-400 outline-none py-1 w-full" type="date" name="date" id="update-date" placeholder="Fecha..." />
+                </div>
+                <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Concepto</label>
                     <input value={expense.Concept} class="border-b border-neutral-400 outline-none py-1" type="text" name="concept" id="concept" placeholder="Concepto de gasto" />
                 </div>
@@ -74,10 +90,6 @@ export default function UpdateExpenseModal({ onCreatedHandler, expense, selectEx
                         <option value="ESTIMATED">Estimado</option>
                         <option value="REAL">Real</option>
                     </select>
-                </div>
-                <div class="flex flex-col gap-1">
-                    <label for="concept" class="font-semibold">Fecha</label>
-                    <input value={expense.Date.split('T')[0]} class="border-b border-neutral-400 outline-none py-1" type="date" name="date" id="date" placeholder="Fecha..." />
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col gap-1">

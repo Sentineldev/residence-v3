@@ -1,8 +1,12 @@
 import { IncomingPropertyDto } from "../../../API/dto/property.dto"
-import { createSignal, createResource, For, Show } from "solid-js";
+import { createSignal, createResource, For, Show, onMount } from "solid-js";
 import PropertyAPI from "../../../API/property.api";
 import TransactionDisplay from "./transaction-display";
 import ChargeTransactionDisplay from "./charge-transaction-display";
+import flatpickr from "flatpickr";
+import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
+import 'flatpickr/dist/themes/confetti.css'
+import 'flatpickr/dist/plugins/monthSelect/style.css'
 
 export type TransactionsDisplayProps = {
     property: IncomingPropertyDto;
@@ -37,6 +41,30 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
         mutate();
     }   
 
+
+    onMount(() => {
+        flatpickr("#date", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            static: true,
+            onChange: OnDateChange,
+            plugins: [
+                monthSelectPlugin({
+                    shorthand: true,
+                    dateFormat: 'Y-m-d',
+                    altFormat: 'F Y',
+                    theme: 'confetti'
+                })
+            ]
+        });
+    });
+
+    function OnDateChange(_: Date[], dateStr: string) {
+        setDate(dateStr);
+        query();
+    }
+
     return (
 
         <div class="py-6">
@@ -47,7 +75,7 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
             </select>
             <div class="flex flex-col py-2 items-start border-b border-neutral-300 lg:w-1/4">
                 <label class="font-bold px-1">Fecha</label>
-                <input onchange={(e) => { setDate(e.target.value); query();  }} value={dateFilter()} type="date" name="" id="" class=" bg-transparent outline-none w-full"/>
+                <input onchange={(e) => { setDate(e.target.value); query();  }} value={dateFilter()} type="date" name="date" id="date" class=" bg-transparent outline-none w-full"/>
             </div>
             <Show when={transactions()}>
                 <div class="hidden lg:grid grid-cols-5 gap-2 py-4 items-center">

@@ -29,6 +29,13 @@ export default class PropertyAPI {
         return data
     }
 
+    public static async getChargeTransactionPayments(transactionId: string) {
+        const url = new URL(`${API_URL}/properties/transaction/payments/${encodeURIComponent(transactionId)}`)
+        const response = await fetch(url)
+        const data = await response.json()
+        return data
+    }
+
     public static async RegisterTransaction(type: string, body: RegisterTransactionDto) {
         const response = await fetch(`${API_URL}/properties/transaction/${encodeURIComponent(type)}`, {
             method: 'POST',
@@ -47,6 +54,13 @@ export default class PropertyAPI {
 
     public static async DeleteTransaction(id: string, type: string) {
         const response = await fetch(`${API_URL}/properties/transaction/${encodeURIComponent(id)}/${encodeURIComponent(type)}`, {
+            method: 'DELETE',
+        })
+        return response;
+    }
+
+    public static async DeleteChargePayment(paymentId: string) {
+        const response = await fetch(`${API_URL}/properties/transaction/charge-payment/${encodeURIComponent(paymentId)}`, {
             method: 'DELETE',
         })
         return response;

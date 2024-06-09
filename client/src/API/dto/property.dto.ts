@@ -35,6 +35,13 @@ export type IncomingChargeTransactionDto = {
 }
 
 
+export type IncomingChargePaymentDto = {
+    Id: string;
+    Transaction: IncomingTransactionDto;
+    Dollars: number;
+    Date: string;
+}
+
 export type RegisterTransactionDto = {
     Concept: string;
     Date: string;

@@ -1,4 +1,4 @@
-import { Show, createResource, createSignal } from "solid-js";
+import { Show, createResource, createSignal, onMount } from "solid-js";
 // import { IncomingExpenseDto } from "../../API/dto/expense.dto";
 import ExpensesDisplay from "./expenses-display";
 import CreateExpenseModal from "./modals/create-expense";
@@ -8,6 +8,10 @@ import ExpenseAPI from "../../API/expense.api";
 import DeleteExpenseModal from "./modals/delete-expense";
 import SideBar from "../sidebar/sidebar";
 import ExpenseStats from "./stats";
+import flatpickr from "flatpickr";
+import 'flatpickr/dist/themes/confetti.css'
+import 'flatpickr/dist/plugins/monthSelect/style.css'
+import monthSelectPlugin from 'flatpickr/dist/plugins/monthSelect'
 
 export default function ExpenseIndex() {
 
@@ -31,9 +35,31 @@ export default function ExpenseIndex() {
         }
     )
 
-
-
+    onMount(() => {
+        flatpickr("#date", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            static: true,
+            onChange: OnDateChange,
+            plugins: [
+                monthSelectPlugin({
+                    shorthand: true,
+                    dateFormat: 'Y-m-d',
+                    altFormat: 'F Y',
+                    theme: 'confetti'
+                })
+            ]
+        });
+    });
     
+
+    function OnDateChange(_: Date[], dateStr: string) {
+        console.log(dateStr);
+        setDateFilter(dateStr);
+        queryExpenses();
+        queryStats();
+    }
 
     function onCreatedHandler() {
         queryExpenses();
@@ -67,19 +93,19 @@ export default function ExpenseIndex() {
         }
     }
 
-    function onDateChange(e: Event & {
-        currentTarget: HTMLInputElement;
-        target: HTMLInputElement;
-    }) {
-        if (e.target.value === '') {
-            setDateFilter(new Date().toISOString().split('T')[0]);
-        }
-        else {
-            setDateFilter(e.target.value);
-        }
-        queryExpenses();
-        queryStats();
-    }
+    // function onDateChange(e: Event & {
+    //     currentTarget: HTMLInputElement;
+    //     target: HTMLInputElement;
+    // }) {
+    //     if (e.target.value === '') {
+    //         setDateFilter(new Date().toISOString().split('T')[0]);
+    //     }
+    //     else {
+    //         setDateFilter(e.target.value);
+    //     }
+    //     queryExpenses();
+    //     queryStats();
+    // }
 
     return (
         <SideBar>
@@ -98,7 +124,7 @@ export default function ExpenseIndex() {
                     <div class="pt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <input onkeyup={(e) => { setSearchFilter((e.target as HTMLInputElement).value); queryExpenses(); }} class="border-b border-neutral-400 py-2 outline-none" type="text" name="search" id="search" placeholder="Buscar concepto" />
                         {/* <input onchange={(e) => { setDateFilter((e.target as HTMLInputElement).value); queryExpenses(); queryStats() }} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" /> */}
-                        <input value={dateFilter()} onchange={onDateChange} class="border-b border-neutral-400 py-2 outline-none" type="date" name="date" id="date" />
+                        <input value={dateFilter()}  class="border-b border-neutral-400 py-2 outline-none w-full" type="date" name="date" id="date" />
                         <select onchange={(e) => { setTypeFilter(e.target.value); queryExpenses(); }} class="border-b border-neutral-400 bg-transparent outline-none py-2" name="type" id="type">
                             <option value="REAL">Real</option>
                             <option value="ESTIMATED">Estimado</option>

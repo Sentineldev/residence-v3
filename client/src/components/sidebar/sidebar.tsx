@@ -1,6 +1,6 @@
 import { JSXElement } from "solid-js";
 import Fa from "solid-fa";
-import { faFlag, faHouseChimney, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { faHouseChimneyUser } from "@fortawesome/free-solid-svg-icons/faHouseChimneyUser";
 
 export type SideBarProps = {

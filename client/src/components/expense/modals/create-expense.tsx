@@ -1,7 +1,9 @@
 import Fa from "solid-fa";
 import ExpenseAPI from "../../../API/expense.api";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
+import flatpickr from "flatpickr";
+import { onMount } from "solid-js";
+import 'flatpickr/dist/themes/confetti.css'
 
 export type CreateExpenseModalProps = {
     onCreatedHandler: () => void;
@@ -24,6 +26,14 @@ export default function CreateExpenseModal({ onCreatedHandler }: CreateExpenseMo
             dialog.close();
         }
     }
+    onMount(() => {
+        flatpickr("#expense-date", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            static: true,
+        });
+    });
 
     async function onSubmitHandler(e: Event & {
         submitter: HTMLElement;
@@ -37,7 +47,7 @@ export default function CreateExpenseModal({ onCreatedHandler }: CreateExpenseMo
 
         const concept = form.elements.namedItem("concept") as HTMLInputElement;
         const type = form.elements.namedItem("type") as HTMLInputElement;
-        const date = form.elements.namedItem("date") as HTMLInputElement;
+        const date = form.elements.namedItem("expense-date") as HTMLInputElement;
         const dollars = form.elements.namedItem("dollars") as HTMLInputElement;
         const bolivares = form.elements.namedItem("bolivares") as HTMLInputElement;
         const changeRate = form.elements.namedItem("change_rate") as HTMLInputElement;
@@ -71,6 +81,10 @@ export default function CreateExpenseModal({ onCreatedHandler }: CreateExpenseMo
             </button>
             <form onsubmit={onSubmitHandler} class="p-6 w-[200px] lg:w-[480px] flex flex-col gap-4">
                 <div class="flex flex-col gap-1">
+                    <label for="concept" class="font-semibold">Fecha</label>
+                    <input class="border-b border-neutral-400 outline-none py-1 w-full" type="date" name="expense-date" id="expense-date" placeholder="Fecha..." />
+                </div>
+                <div class="flex flex-col gap-1">
                     <label for="concept" class="font-semibold">Concepto</label>
                     <input class="border-b border-neutral-400 outline-none py-1" type="text" name="concept" id="concept" placeholder="Concepto de gasto" />
                 </div>
@@ -81,10 +95,6 @@ export default function CreateExpenseModal({ onCreatedHandler }: CreateExpenseMo
                         <option value="ESTIMATED">Estimado</option>
                         <option value="REAL">Real</option>
                     </select>
-                </div>
-                <div class="flex flex-col gap-1">
-                    <label for="concept" class="font-semibold">Fecha</label>
-                    <input class="border-b border-neutral-400 outline-none py-1" type="date" name="date" id="date" placeholder="Fecha..." />
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div class="flex flex-col gap-1">

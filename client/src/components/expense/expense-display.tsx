@@ -14,7 +14,7 @@ export default function ExpenseDisplay({ expense,  selectExpense}: ExpenseDispla
     }
 
     return (
-        <div class="grid grid-cols-1 lg:grid-cols-5 border-b border-neutral-400 py-2 gap-6 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-5  py-2 gap-6 items-center">
             <div>
                 <header>
                     <span class="lg:hidden"><strong>Concepto</strong>: </span>
