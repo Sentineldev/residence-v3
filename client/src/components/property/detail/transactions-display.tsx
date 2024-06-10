@@ -43,7 +43,7 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
 
 
     onMount(() => {
-        flatpickr("#date", {
+        flatpickr("#filter-date", {
             altInput: true,
             altFormat: "F j, Y",
             dateFormat: "Y-m-d",
@@ -75,7 +75,7 @@ export default function TransactionsDisplay({ property }: TransactionsDisplayPro
             </select>
             <div class="flex flex-col py-2 items-start border-b border-neutral-300 lg:w-1/4">
                 <label class="font-bold px-1">Fecha</label>
-                <input onchange={(e) => { setDate(e.target.value); query();  }} value={dateFilter()} type="date" name="date" id="date" class=" bg-transparent outline-none w-full"/>
+                <input onchange={(e) => { setDate(e.target.value); query();  }} value={dateFilter()} type="date" name="filter-date" id="filter-date" class=" bg-transparent outline-none w-full"/>
             </div>
             <Show when={transactions()}>
                 <div class="hidden lg:grid grid-cols-5 gap-2 py-4 items-center">

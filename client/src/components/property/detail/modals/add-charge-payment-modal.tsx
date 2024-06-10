@@ -1,4 +1,4 @@
-import { faHandPointUp } from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import Fa from "solid-fa";
 import { IncomingChargeTransactionDto, IncomingPropertyDto } from "../../../../API/dto/property.dto";
 import PropertyAPI from "../../../../API/property.api";
@@ -94,9 +94,9 @@ export default function AddChargePaymentModal({ charge, property }: AddChargePay
             </form>
             
         </dialog>
-        <button onclick={OpenModalHandler} class="bg-primary text-secondary rounded flex items-center gap-2 p-1 px-2 hover:bg-secondary hover:text-primary font-bold">
-            <Fa icon={faHandPointUp}/>
-            <span>Abonar</span>
+        <button onclick={OpenModalHandler} class="bg-primary text-secondary rounded flex items-center gap-2 p-1 px-2 hover:bg-secondary hover:text-primary font-bold tooltip">
+            <Fa icon={faMoneyBill}/>
+            {/* <span>Abonar</span> */}
         </button>
         </>
     );

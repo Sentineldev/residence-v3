@@ -45,8 +45,8 @@ export default function ChargeTransactionDisplay({ transaction, property }: Char
             </div>
             <div class="flex gap-4">
                 <AddChargePaymentModal property={property} charge={transaction}/>
-                <DeleteTransactionModal transaction={transaction.Transaction}/>
                 <ShowChargeTransactionPayments charge={transaction} />
+                <DeleteTransactionModal transaction={transaction.Transaction}/>
             </div>
         </div>
     );
