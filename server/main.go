@@ -11,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// TO-DO: refactorizar l controlador de propidads.
+// Hay dos posibles controladores: Properties, Transactions
 func main() {
 
 	app := gin.Default()
@@ -23,9 +25,7 @@ func main() {
 		//default 404 page not found
 	})
 
-	router := app.Group("/api")
-
-	router.Use(cors.New(cors.Config{
+	app.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"Origin"},
@@ -36,6 +36,8 @@ func main() {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+
+	router := app.Group("/api")
 
 	router.GET("/expenses/stats/:year/:month", ExpenseController.Stats)
 	router.GET("/expenses", ExpenseController.Expenses)
